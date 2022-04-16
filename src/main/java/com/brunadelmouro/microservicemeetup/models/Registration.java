@@ -1,24 +1,49 @@
 package com.brunadelmouro.microservicemeetup.models;
 
+import javax.persistence.*;
+import java.util.List;
+
+@Entity
 public class Registration {
 
+    @Id
+    @Column(name = "registration_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String name;
-    private String email;
-    private String dateOfRegistration;
-    private String registration; //substituir pelo id da tabela original
 
-    //private List<Meetup> meetups;
+    @Column(name = "person_name")
+    private String name;
+
+    @Column(name = "person_email")
+    private String email;
+
+    @Column(name = "date_of_registration")
+    private String dateOfRegistration;
+
+    @Column
+    private String registrationNumber; //substituir pelo id da tabela original
+
+    @Column
+    @OneToMany(mappedBy = "registrationNumber")
+    private List<Meetup> meetups;
 
     public Registration() {
     }
 
-    public Registration(Integer id, String name, String email, String dateOfRegistration, String registration) {
+    public Registration(Integer id, String name, String email, String dateOfRegistration, String registrationNumber) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.dateOfRegistration = dateOfRegistration;
-        this.registration = registration;
+        this.registrationNumber = registrationNumber;
+    }
+
+    public List<Meetup> getMeetups() {
+        return meetups;
+    }
+
+    public void setMeetups(List<Meetup> meetups) {
+        this.meetups = meetups;
     }
 
     public Integer getId() {
@@ -53,11 +78,11 @@ public class Registration {
         this.dateOfRegistration = dateOfRegistration;
     }
 
-    public String getRegistration() {
-        return registration;
+    public String getRegistrationNumber() {
+        return registrationNumber;
     }
 
-    public void setRegistration(String registration) {
-        this.registration = registration;
+    public void setRegistrationNumber(String registrationNumber) {
+        this.registrationNumber = registrationNumber;
     }
 }

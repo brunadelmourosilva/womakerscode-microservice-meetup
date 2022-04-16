@@ -1,14 +1,27 @@
 package com.brunadelmouro.microservicemeetup.models;
 
+import javax.persistence.*;
+
+@Entity
 public class Meetup {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) //utilizada para indicar um primary key
     private Integer id;
+
+    @Column(name = "event_name")
     private String event;
+
+    @Column(name = "meetupDate")
     private String meetupDate;
+
+    @Column
     private boolean registered;
 
-    //private Registration registration;
-
+    // muitos meetups para 1 registro
+    @JoinColumn(name = "id_registration")
+    @ManyToOne
+    private Registration registrationNumber;
 
     public Meetup() {
     }
@@ -18,6 +31,14 @@ public class Meetup {
         this.event = event;
         this.meetupDate = meetupDate;
         this.registered = true;
+    }
+
+    public Registration getRegistrationNumber() {
+        return registrationNumber;
+    }
+
+    public void setRegistrationNumber(Registration registrationNumber) {
+        this.registrationNumber = registrationNumber;
     }
 
     public Integer getId() {

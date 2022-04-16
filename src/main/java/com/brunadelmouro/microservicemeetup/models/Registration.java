@@ -1,10 +1,11 @@
 package com.brunadelmouro.microservicemeetup.models;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
-public class Registration {
+public class Registration implements Serializable {
 
     @Id
     @Column(name = "registration_id")
@@ -16,6 +17,9 @@ public class Registration {
 
     @Column(name = "person_email")
     private String email;
+
+    @Column(name = "person_password")
+    private String password;
 
     @Column(name = "date_of_registration")
     private String dateOfRegistration;
@@ -30,10 +34,11 @@ public class Registration {
     public Registration() {
     }
 
-    public Registration(Integer id, String name, String email, String dateOfRegistration, String registrationNumber) {
+    public Registration(Integer id, String name, String email, String password, String dateOfRegistration, String registrationNumber) {
         this.id = id;
         this.name = name;
         this.email = email;
+        this.password = password;
         this.dateOfRegistration = dateOfRegistration;
         this.registrationNumber = registrationNumber;
     }
@@ -68,6 +73,14 @@ public class Registration {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getDateOfRegistration() {

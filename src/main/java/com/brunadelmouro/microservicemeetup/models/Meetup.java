@@ -1,9 +1,10 @@
 package com.brunadelmouro.microservicemeetup.models;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
-public class Meetup {
+public class Meetup implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) //utilizada para indicar um primary key
@@ -19,7 +20,7 @@ public class Meetup {
     private boolean registered;
 
     // muitos meetups para 1 registro
-    @JoinColumn(name = "id_registration")
+    @JoinColumn(name = "registration_id")
     @ManyToOne
     private Registration registrationNumber;
 

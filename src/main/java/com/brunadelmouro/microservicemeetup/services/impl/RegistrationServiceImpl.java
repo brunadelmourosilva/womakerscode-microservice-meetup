@@ -21,7 +21,8 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     @Override
     public Registration saveRegistration(Registration registration) {
-        //if(registrationRepository.existsByRegistrationNumber(registration.getRegistrationNumber()))
+//        if (registrationRepository.findByEmail(registration.getEmail()))
+//            throw new MyException("Registration already exist");
         //implementar exception para validar email
         return registrationRepository.save(registration);
     }

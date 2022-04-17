@@ -12,6 +12,7 @@
 - [ ] Implementação da classe de service
 - [ ] Implementação da classe de controller
 - [x] Implementação do repository
+- [ ] Implementação de DTO's
 - [x] Adicionar MySQL ao projeto
 - [ ] Tratamento de exceptions
 - [ ] Adicionar HATEOAS

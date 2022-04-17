@@ -13,11 +13,11 @@ public interface MeetupService {
 
     Meetup findMeetupById(Integer id);
 
-    boolean findRegistrationById(Integer id);
+    //Meetup findMeetupByRegistrationNumber(String registrationNumber);
 
     List<Meetup> findMeetups();
 
-    Page<Meetup> findRegistrationsByMeetup(Registration registration, Pageable pageable);
+    //Page<Meetup> findRegistrationsByMeetup(Registration registration, Pageable pageable);
 
     Meetup updateMeetup(Meetup meetup);
 

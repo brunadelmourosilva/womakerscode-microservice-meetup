@@ -2,6 +2,7 @@ package com.brunadelmouro.microservicemeetup.models;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 public class Meetup implements Serializable {
@@ -16,13 +17,8 @@ public class Meetup implements Serializable {
     @Column(name = "meetupDate")
     private String meetupDate;
 
-    @Column
-    private boolean registered;
-
-    // muitos meetups para 1 registro
-    @JoinColumn(name = "registration_id")
-    @ManyToOne
-    private Registration registrationNumber;
+    @ManyToMany(mappedBy="meetups")
+    private List<Registration> registrationNumbers;
 
     public Meetup() {
     }
@@ -31,15 +27,14 @@ public class Meetup implements Serializable {
         this.id = id;
         this.event = event;
         this.meetupDate = meetupDate;
-        this.registered = true;
     }
 
-    public Registration getRegistrationNumber() {
-        return registrationNumber;
+    public List<Registration> getRegistrationNumbers() {
+        return registrationNumbers;
     }
 
-    public void setRegistrationNumber(Registration registrationNumber) {
-        this.registrationNumber = registrationNumber;
+    public void setRegistrationNumbers(List<Registration> registrationNumbers) {
+        this.registrationNumbers = registrationNumbers;
     }
 
     public Integer getId() {
@@ -66,11 +61,4 @@ public class Meetup implements Serializable {
         this.meetupDate = meetupDate;
     }
 
-    public boolean isRegistered() {
-        return registered;
-    }
-
-    public void setRegistered(boolean registered) {
-        this.registered = registered;
-    }
 }

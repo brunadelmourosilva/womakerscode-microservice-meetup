@@ -28,7 +28,10 @@ public class Registration implements Serializable {
     private String registrationNumber; //substituir pelo id da tabela original
 
     @Column
-    @OneToMany(mappedBy = "registrationNumber")
+    @ManyToMany
+    @JoinTable(name = "REGISTRATION_HAS_MEETUP",
+            joinColumns = @JoinColumn(name = "registration_id"),
+            inverseJoinColumns = @JoinColumn(name = "meetup_id"))
     private List<Meetup> meetups;
 
     public Registration() {

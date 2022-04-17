@@ -2,6 +2,7 @@ package com.brunadelmouro.microservicemeetup.services.impl;
 
 import com.brunadelmouro.microservicemeetup.models.Meetup;
 import com.brunadelmouro.microservicemeetup.models.Registration;
+import com.brunadelmouro.microservicemeetup.models.dto.MeetupResponseDTO;
 import com.brunadelmouro.microservicemeetup.repositories.MeetupRepository;
 import com.brunadelmouro.microservicemeetup.services.MeetupService;
 import org.hibernate.ObjectNotFoundException;
@@ -40,10 +41,14 @@ public class MeetupServiceImpl implements MeetupService {
         return obj.orElseThrow(() -> new ObjectNotFoundException(1, "Object not found"));
     }
 
-    //buscar todos os meetups cadastrados com as pessoas
+    //buscar todos os meetups cadastrados
     @Override
     public List<Meetup> findMeetups() {
         return meetupRepository.findAll();
+    }
+
+    public MeetupResponseDTO convertEntityToResponseDTO(Meetup meetup){
+        return new MeetupResponseDTO(meetup.getId(), meetup.getEvent(), meetup.getMeetupDate());
     }
 
 

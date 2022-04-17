@@ -3,7 +3,9 @@ package com.brunadelmouro.microservicemeetup.services.impl;
 import com.brunadelmouro.microservicemeetup.models.Registration;
 import com.brunadelmouro.microservicemeetup.repositories.RegistrationRepository;
 import com.brunadelmouro.microservicemeetup.services.RegistrationService;
+import com.fasterxml.jackson.databind.util.BeanUtil;
 import org.hibernate.ObjectNotFoundException;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -21,23 +23,31 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     @Override
     public Registration saveRegistration(Registration registration) {
-//        if (registrationRepository.findByEmail(registration.getEmail()))
-//            throw new MyException("Registration already exist");
-        //implementar exception para validar email
+        validateRegistrationExistsByEmail(registration.getEmail());
         return registrationRepository.save(registration);
+    }
+
+    public void validateRegistrationExistsByEmail(String email){
+        if(registrationRepository.existsByEmail(email))
+            throw new IllegalArgumentException("Objeto já cadastrado");
+    }
+
+    public Registration validateRegistrationExists(Registration registration){
+        if (registration == null || registration.getId() == null) {
+            throw new IllegalArgumentException("Registration id cannot be null");
+        }
+        return registration;
     }
 
     @Override
     public Registration findRegistrationById(Integer id) {
         Optional<Registration> obj = registrationRepository.findById(id);
-        //implementar exception de id
         return obj.orElseThrow(() -> new ObjectNotFoundException(1, "Object not found"));
     }
 
     @Override
-    public Registration findRegistrationByNumber(String registrationNumber) {
+    public Registration findRegistrationByRegistrationNumber(String registrationNumber) {
         Optional<Registration> obj = registrationRepository.findByRegistrationNumber(registrationNumber);
-        //implementar exception de rNumber
         return obj.orElseThrow(() -> new ObjectNotFoundException(1, "Object not found"));
     }
 
@@ -54,20 +64,16 @@ public class RegistrationServiceImpl implements RegistrationService {
     }
 
     @Override
-    public Registration updateRegistration(Registration registration) {
-//        if (registration == null || registration.getId() == null) {
-//            throw new IllegalArgumentException("Registration id cannot be null");
-//        }
-        //implementar exception de update
-        return registrationRepository.save(registration);
+    public Registration updateRegistration(Registration bodyRegistration) {
+        validateRegistrationExists(bodyRegistration);
+        Registration newRegistration = findRegistrationById(bodyRegistration.getId());
+        BeanUtils.copyProperties(bodyRegistration, newRegistration, "id");
+        return registrationRepository.save(newRegistration);
     }
 
     @Override
     public void deleteRegistration(Registration registration) {
-        if (registration == null || registration.getId() == null) {
-            throw new IllegalArgumentException("Registration id cannot be null");
-        }
-
+        validateRegistrationExists(registration);
         this.registrationRepository.delete(registration);
     }
 }

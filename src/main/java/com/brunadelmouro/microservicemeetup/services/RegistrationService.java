@@ -10,7 +10,7 @@ public interface RegistrationService {
 
     Registration findRegistrationById(Integer id);
 
-    Registration findRegistrationByNumber(String registrationNumber);
+    Registration findRegistrationByRegistrationNumber(String registrationNumber);
 
     Page<Registration> findRegistrationPage(Registration filter, Pageable pageRequest);
 

@@ -9,7 +9,7 @@ import java.util.Optional;
 @Repository
 public interface RegistrationRepository extends JpaRepository<Registration, Integer> {
 
-    boolean findByEmail(String email);
+    boolean existsByEmail(String email);
 
     Optional<Registration> findByRegistrationNumber(String registrationNumber);
 

@@ -4,7 +4,6 @@ import com.brunadelmouro.microservicemeetup.models.Registration;
 import com.brunadelmouro.microservicemeetup.models.dto.RegistrationResponseDTO;
 import com.brunadelmouro.microservicemeetup.repositories.RegistrationRepository;
 import com.brunadelmouro.microservicemeetup.services.RegistrationService;
-import com.fasterxml.jackson.databind.util.BeanUtil;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +28,7 @@ public class RegistrationServiceImpl implements RegistrationService {
     }
 
     public RegistrationResponseDTO convertEntityToResponseDTO(Registration registration) {
-        return new RegistrationResponseDTO(registration.getId(), registration.getName(), registration.getEmail(), registration.getDateOfRegistration(), registration.getRegistrationNumber());
+        return new RegistrationResponseDTO(registration.getId(), registration.getName(), registration.getEmail(), registration.getDateOfRegistration(), registration.getNumber());
     }
 
     public void validateRegistrationExistsByEmail(String email){
@@ -52,7 +51,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     @Override
     public Registration findRegistrationByRegistrationNumber(String registrationNumber) {
-        Optional<Registration> obj = registrationRepository.findByRegistrationNumber(registrationNumber);
+        Optional<Registration> obj = registrationRepository.findByNumber(registrationNumber);
         return obj.orElseThrow(() -> new ObjectNotFoundException(1, "Object not found"));
     }
 

@@ -25,7 +25,7 @@ public class Registration implements Serializable {
     private String dateOfRegistration;
 
     @Column
-    private String registrationNumber; //substituir pelo id da tabela original
+    private String number; //substituir pelo id da tabela original
 
     @Column
     @ManyToMany
@@ -43,7 +43,7 @@ public class Registration implements Serializable {
         this.email = email;
         this.password = password;
         this.dateOfRegistration = dateOfRegistration;
-        this.registrationNumber = registrationNumber;
+        this.number = registrationNumber;
     }
 
     public List<Meetup> getMeetups() {
@@ -94,11 +94,11 @@ public class Registration implements Serializable {
         this.dateOfRegistration = dateOfRegistration;
     }
 
-    public String getRegistrationNumber() {
-        return registrationNumber;
+    public String getNumber() {
+        return number;
     }
 
-    public void setRegistrationNumber(String registrationNumber) {
-        this.registrationNumber = registrationNumber;
+    public void setNumber(String number) {
+        this.number = number;
     }
 }

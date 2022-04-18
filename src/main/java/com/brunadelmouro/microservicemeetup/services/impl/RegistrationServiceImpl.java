@@ -1,6 +1,7 @@
 package com.brunadelmouro.microservicemeetup.services.impl;
 
 import com.brunadelmouro.microservicemeetup.models.Registration;
+import com.brunadelmouro.microservicemeetup.models.dto.RegistrationResponseDTO;
 import com.brunadelmouro.microservicemeetup.repositories.RegistrationRepository;
 import com.brunadelmouro.microservicemeetup.services.RegistrationService;
 import com.fasterxml.jackson.databind.util.BeanUtil;
@@ -25,6 +26,10 @@ public class RegistrationServiceImpl implements RegistrationService {
     public Registration saveRegistration(Registration registration) {
         validateRegistrationExistsByEmail(registration.getEmail());
         return registrationRepository.save(registration);
+    }
+
+    public RegistrationResponseDTO convertEntityToResponseDTO(Registration registration) {
+        return new RegistrationResponseDTO(registration.getId(), registration.getName(), registration.getEmail(), registration.getDateOfRegistration(), registration.getRegistrationNumber());
     }
 
     public void validateRegistrationExistsByEmail(String email){

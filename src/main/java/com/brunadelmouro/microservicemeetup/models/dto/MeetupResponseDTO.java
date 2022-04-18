@@ -5,6 +5,9 @@ public class MeetupResponseDTO {
     private String event;
     private String meetupDate;
 
+    public MeetupResponseDTO() {
+    }
+
     public MeetupResponseDTO(Integer id, String event, String meetupDate) {
         this.id = id;
         this.event = event;

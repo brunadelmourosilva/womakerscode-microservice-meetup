@@ -6,6 +6,7 @@ import com.brunadelmouro.microservicemeetup.models.dto.MeetupResponseDTO;
 import com.brunadelmouro.microservicemeetup.repositories.MeetupRepository;
 import com.brunadelmouro.microservicemeetup.services.MeetupService;
 import org.hibernate.ObjectNotFoundException;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -41,7 +42,7 @@ public class MeetupServiceImpl implements MeetupService {
         return obj.orElseThrow(() -> new ObjectNotFoundException(1, "Object not found"));
     }
 
-    //buscar todos os meetups cadastrados
+    //buscar todos os meetups cadastrados - OK
     @Override
     public List<Meetup> findMeetups() {
         return meetupRepository.findAll();
@@ -52,11 +53,19 @@ public class MeetupServiceImpl implements MeetupService {
     }
 
 
-
     @Override
-    public Meetup updateMeetup(Meetup meetup) {
-        //BRUNA IMPLEMENTAR
-        return null;
+    public Meetup updateMeetup(Meetup bodyMeetup) {
+        validateMeetupExists(bodyMeetup);
+        Meetup newMeetup = findMeetupById(bodyMeetup.getId());
+        BeanUtils.copyProperties(bodyMeetup, newMeetup, "id");
+        return meetupRepository.save(newMeetup);
+    }
+
+    public Meetup validateMeetupExists(Meetup meetup){
+        if (meetup == null || meetup.getId() == null) {
+            throw new IllegalArgumentException("Meetup id cannot be null");
+        }
+        return meetup;
     }
 
     @Override

@@ -1,39 +1,24 @@
-package com.brunadelmouro.microservicemeetup.models;
+package com.brunadelmouro.microservicemeetup.models.dto;
 
-import javax.persistence.*;
-import java.io.Serializable;
+import com.brunadelmouro.microservicemeetup.models.Registration;
+
 import java.util.List;
 
-@Entity
-public class Meetup implements Serializable {
+public class MeetupRegistrationResponseDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) //utilizada para indicar um primary key
     private Integer id;
-
-    @Column(name = "event_name")
     private String event;
-
-    @Column(name = "meetupDate")
     private String meetupDate;
 
-    @ManyToMany(mappedBy="meetups")
     private List<Registration> registrationsList;
 
-    public Meetup() {
+    public MeetupRegistrationResponseDTO() {
     }
 
-    public Meetup(Integer id, String event, String meetupDate) {
+    public MeetupRegistrationResponseDTO(Integer id, String event, String meetupDate, List<Registration> registrationsList) {
         this.id = id;
         this.event = event;
         this.meetupDate = meetupDate;
-    }
-
-    public List<Registration> getRegistrationsList() {
-        return registrationsList;
-    }
-
-    public void setRegistrationsList(List<Registration> registrationsList) {
         this.registrationsList = registrationsList;
     }
 
@@ -61,4 +46,11 @@ public class Meetup implements Serializable {
         this.meetupDate = meetupDate;
     }
 
+    public List<Registration> getRegistrationsList() {
+        return registrationsList;
+    }
+
+    public void setRegistrationsList(List<Registration> registrationsList) {
+        this.registrationsList = registrationsList;
+    }
 }

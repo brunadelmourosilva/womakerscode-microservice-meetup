@@ -44,27 +44,20 @@ public class MeetupController {
     }
 
     //update do meetup para adicionar um registration
-    @PutMapping(value = "/{id}")
-    private ResponseEntity<Meetup> updateMeetup(@PathVariable Integer id, @RequestBody String registrationNumber){
-        // procurar no banco de dados o id do meetup, guardar objeto
-        System.out.println("entrou na função");
-        Meetup meetup = meetupService.findMeetupById(id);
-        System.out.println("encontrou meetup!");
-        // procurar registrationNumber da pessoa, guardar pessoa/objeto encontrado
-        Registration registration = registrationService.findRegistrationByRegistrationNumber(registrationNumber);
-        System.out.println("encontrou registration!");
-        // chamar um update, enviando para o método:
-        // o objeto meetup
-        // o objeto registration
-        meetup.setRegistrationsList(Arrays.asList(registration));
-        System.out.println("setou registration!");
-        System.out.println(registration);
-        System.out.println();
-        System.out.println(meetup);
-        meetupService.updateMeetup(meetup);
-        System.out.println("atualizou!");
+    @PutMapping(value = "/{meetupId}")
+    private ResponseEntity<Meetup> updateMeetup(@PathVariable Integer meetupId, @RequestBody String number){
 
-        //retornar meetup + registration (dto novo com registration)
+        Meetup meetup = meetupService.findMeetupById(meetupId);
+
+        number = number.substring(29, number.length()-4);
+        Registration registration = registrationService.findRegistrationByRegistrationNumber(number);
+        registration.getMeetups().add(meetup);
+        meetup.getRegistrationsList().add(registration);
+
+        registrationService.updateRegistration(registration);
+        meetupService.updateMeetup(meetup);
+
+        System.out.println("VAI SALVAR!!!!!!!!!!!!!!");
         return ResponseEntity.ok().body(meetup);
     }
 

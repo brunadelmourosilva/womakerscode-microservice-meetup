@@ -55,9 +55,12 @@ public class MeetupServiceImpl implements MeetupService {
 
     @Override
     public Meetup updateMeetup(Meetup bodyMeetup) {
+        System.out.println("Meetup recebido pela função: " + bodyMeetup);
         validateMeetupExists(bodyMeetup);
         Meetup newMeetup = findMeetupById(bodyMeetup.getId());
-        BeanUtils.copyProperties(bodyMeetup, newMeetup, "id");
+        System.out.println("\n\nAntes do copyProperties: " + bodyMeetup);
+        BeanUtils.copyProperties(bodyMeetup, newMeetup);
+        System.out.println("\n\nDepois do copyProperties: " + newMeetup);
         return meetupRepository.save(newMeetup);
     }
 

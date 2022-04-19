@@ -1,5 +1,7 @@
 package com.brunadelmouro.microservicemeetup.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
@@ -27,6 +29,7 @@ public class Registration implements Serializable {
     @Column
     private String number; //substituir pelo id da tabela original
 
+    @JsonIgnore
     @Column
     @ManyToMany
     @JoinTable(name = "REGISTRATION_HAS_MEETUP",

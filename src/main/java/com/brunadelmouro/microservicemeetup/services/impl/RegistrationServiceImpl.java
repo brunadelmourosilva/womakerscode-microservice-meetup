@@ -51,8 +51,9 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     @Override
     public Registration findRegistrationByRegistrationNumber(String registrationNumber) {
-        Optional<Registration> obj = registrationRepository.findByNumber(registrationNumber);
-        return obj.orElseThrow(() -> new ObjectNotFoundException(1, "Object not found"));
+        Registration registration = registrationRepository.findByNumber(registrationNumber);
+        validateRegistrationExists(registration);
+        return registration;
     }
 
     @Override

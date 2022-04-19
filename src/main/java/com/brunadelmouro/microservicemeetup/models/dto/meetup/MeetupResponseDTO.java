@@ -1,4 +1,4 @@
-package com.brunadelmouro.microservicemeetup.models.dto;
+package com.brunadelmouro.microservicemeetup.models.dto.meetup;
 
 public class MeetupResponseDTO {
     private Integer id;

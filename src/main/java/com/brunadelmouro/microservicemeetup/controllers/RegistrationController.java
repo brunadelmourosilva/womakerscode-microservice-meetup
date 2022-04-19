@@ -1,22 +1,12 @@
 package com.brunadelmouro.microservicemeetup.controllers;
 
-import com.brunadelmouro.microservicemeetup.models.Meetup;
 import com.brunadelmouro.microservicemeetup.models.Registration;
-import com.brunadelmouro.microservicemeetup.models.dto.MeetupResponseDTO;
-import com.brunadelmouro.microservicemeetup.models.dto.RegistrationResponseDTO;
-import com.brunadelmouro.microservicemeetup.services.impl.MeetupServiceImpl;
+import com.brunadelmouro.microservicemeetup.models.dto.registration.RegistrationResponseDTO;
 import com.brunadelmouro.microservicemeetup.services.impl.RegistrationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.modelmapper.ModelMapper;
-
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/api/registrations")

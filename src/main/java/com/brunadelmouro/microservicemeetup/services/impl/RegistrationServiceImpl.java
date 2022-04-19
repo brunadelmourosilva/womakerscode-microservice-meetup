@@ -1,7 +1,8 @@
 package com.brunadelmouro.microservicemeetup.services.impl;
 
 import com.brunadelmouro.microservicemeetup.models.Registration;
-import com.brunadelmouro.microservicemeetup.models.dto.RegistrationResponseDTO;
+import com.brunadelmouro.microservicemeetup.models.dto.registration.RegistrationMeetupListResponseDTO;
+import com.brunadelmouro.microservicemeetup.models.dto.registration.RegistrationResponseDTO;
 import com.brunadelmouro.microservicemeetup.repositories.RegistrationRepository;
 import com.brunadelmouro.microservicemeetup.services.RegistrationService;
 import org.hibernate.ObjectNotFoundException;
@@ -13,7 +14,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class RegistrationServiceImpl implements RegistrationService {
@@ -80,5 +83,11 @@ public class RegistrationServiceImpl implements RegistrationService {
     public void deleteRegistration(Registration registration) {
         validateRegistrationExists(registration);
         this.registrationRepository.delete(registration);
+    }
+
+    public List<RegistrationMeetupListResponseDTO> convertEntityToRegistrationMeetupListResponseDTO(List<Registration> registrationList){
+        return registrationList.stream().map(registration ->
+            new RegistrationMeetupListResponseDTO(registration.getName(), registration.getEmail())
+        ).collect(Collectors.toList());
     }
 }

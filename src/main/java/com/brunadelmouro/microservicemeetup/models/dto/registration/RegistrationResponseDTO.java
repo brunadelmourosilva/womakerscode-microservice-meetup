@@ -1,4 +1,4 @@
-package com.brunadelmouro.microservicemeetup.models.dto;
+package com.brunadelmouro.microservicemeetup.models.dto.registration;
 
 public class RegistrationResponseDTO {
 

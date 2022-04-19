@@ -1,15 +1,12 @@
 package com.brunadelmouro.microservicemeetup.services.impl;
 
 import com.brunadelmouro.microservicemeetup.models.Meetup;
-import com.brunadelmouro.microservicemeetup.models.Registration;
-import com.brunadelmouro.microservicemeetup.models.dto.MeetupResponseDTO;
+import com.brunadelmouro.microservicemeetup.models.dto.meetup.MeetupResponseDTO;
 import com.brunadelmouro.microservicemeetup.repositories.MeetupRepository;
 import com.brunadelmouro.microservicemeetup.services.MeetupService;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;

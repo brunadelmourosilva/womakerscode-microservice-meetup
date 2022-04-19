@@ -29,6 +29,16 @@ public class Meetup implements Serializable {
         this.meetupDate = meetupDate;
     }
 
+    @Override
+    public String toString() {
+        return "Meetup{" +
+                "id=" + id +
+                ", event='" + event + '\'' +
+                ", meetupDate='" + meetupDate + '\'' +
+                ", registrationsList=" + registrationsList +
+                '}';
+    }
+
     public List<Registration> getRegistrationsList() {
         return registrationsList;
     }

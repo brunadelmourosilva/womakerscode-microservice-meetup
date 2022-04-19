@@ -1,21 +1,19 @@
-package com.brunadelmouro.microservicemeetup.models.dto;
+package com.brunadelmouro.microservicemeetup.models.dto.meetup;
 
 import com.brunadelmouro.microservicemeetup.models.Registration;
+import com.brunadelmouro.microservicemeetup.models.dto.registration.RegistrationMeetupListResponseDTO;
 
+import javax.persistence.*;
 import java.util.List;
 
-public class MeetupRegistrationResponseDTO {
+public class MeetupResponseListDTO {
 
     private Integer id;
     private String event;
     private String meetupDate;
+    private List<RegistrationMeetupListResponseDTO> registrationsList;
 
-    private List<Registration> registrationsList;
-
-    public MeetupRegistrationResponseDTO() {
-    }
-
-    public MeetupRegistrationResponseDTO(Integer id, String event, String meetupDate, List<Registration> registrationsList) {
+    public MeetupResponseListDTO(Integer id, String event, String meetupDate, List<RegistrationMeetupListResponseDTO> registrationsList) {
         this.id = id;
         this.event = event;
         this.meetupDate = meetupDate;
@@ -46,11 +44,11 @@ public class MeetupRegistrationResponseDTO {
         this.meetupDate = meetupDate;
     }
 
-    public List<Registration> getRegistrationsList() {
+    public List<RegistrationMeetupListResponseDTO> getRegistrationsList() {
         return registrationsList;
     }
 
-    public void setRegistrationsList(List<Registration> registrationsList) {
+    public void setRegistrationsList(List<RegistrationMeetupListResponseDTO> registrationsList) {
         this.registrationsList = registrationsList;
     }
 }

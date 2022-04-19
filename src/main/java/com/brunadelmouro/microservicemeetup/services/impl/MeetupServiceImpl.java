@@ -22,43 +22,48 @@ public class MeetupServiceImpl implements MeetupService {
         return meetupRepository.save(meetup);
     }
 
-    public void validateEventDoesntExist(String event){
-        meetupRepository.findAll().forEach(
-                x -> {
-                    String comparsion = x.getEvent().toUpperCase();
-                    if(event.toUpperCase().equals(comparsion))
-                        throw new IllegalArgumentException("Evento já cadastrado");
-
-                });
-    }
-
-    //mostrar meetup e lista de pessoas
     @Override
     public Meetup findMeetupById(Integer id) {
         Optional<Meetup> obj = meetupRepository.findById(id);
+
         return obj.orElseThrow(() -> new ObjectNotFoundException(1, "Object not found"));
     }
 
-    //buscar todos os meetups cadastrados - OK
     @Override
     public List<Meetup> findMeetups() {
         return meetupRepository.findAll();
     }
+
+    @Override
+    public Meetup updateMeetup(Meetup bodyMeetup) {
+        validateMeetupExists(bodyMeetup);
+
+        Meetup newMeetup = findMeetupById(bodyMeetup.getId());
+        BeanUtils.copyProperties(bodyMeetup, newMeetup);
+
+        return meetupRepository.save(newMeetup);
+    }
+
+    @Override
+    public void deleteMeetup(Meetup meetup) {
+        //deletar meetup se o mesmo estiver com  a lista de registrations vazia
+        //caso contrário, retornar uma exceção personalizada
+    }
+
 
     public MeetupResponseDTO convertEntityToResponseDTO(Meetup meetup){
         return new MeetupResponseDTO(meetup.getId(), meetup.getEvent(), meetup.getMeetupDate());
     }
 
 
-    @Override
-    public Meetup updateMeetup(Meetup bodyMeetup) {
-        System.out.println("Meetup recebido pela função: " + bodyMeetup);
-        validateMeetupExists(bodyMeetup);
-        Meetup newMeetup = findMeetupById(bodyMeetup.getId());
-        System.out.println("\n\nAntes do copyProperties: " + bodyMeetup);
-        BeanUtils.copyProperties(bodyMeetup, newMeetup);
-        System.out.println("\n\nDepois do copyProperties: " + newMeetup);
-        return meetupRepository.save(newMeetup);
+    public void validateEventDoesntExist(String event){
+        meetupRepository.findAll().forEach(
+                x -> {
+                    String comparsion = x.getEvent().toUpperCase();
+                    if(event.toUpperCase().equals(comparsion))
+                        throw new IllegalArgumentException("Event already exists");
+
+                });
     }
 
     public Meetup validateMeetupExists(Meetup meetup){
@@ -66,10 +71,5 @@ public class MeetupServiceImpl implements MeetupService {
             throw new IllegalArgumentException("Meetup id cannot be null");
         }
         return meetup;
-    }
-
-    @Override
-    public void deleteMeetup(Meetup meetup) {
-        //BRUNA IMPLEMENTAR
     }
 }

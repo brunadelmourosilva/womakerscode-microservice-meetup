@@ -26,45 +26,14 @@ public class MeetupController {
     @Autowired
     private RegistrationServiceImpl registrationService;
 
-    @GetMapping
-    private ResponseEntity<List<MeetupResponseDTO>> listAllMeetups(){
-        List<MeetupResponseDTO> list = meetupService.findMeetups()
-                .stream().map(x -> new MeetupResponseDTO(
-                        x.getId(),
-                        x.getEvent(),
-                        x.getMeetupDate()))
-                .collect(Collectors.toList());
 
-        return ResponseEntity.ok().body(list);
-    }
-
-    @GetMapping(value = "/{id}")
-    private ResponseEntity<MeetupResponseListDTO> listAllRegistrationsByMeetup(@PathVariable(name = "id") Integer meetupId){
-        System.out.println("Entrou no GET!");
-        Meetup meetup = meetupService.findMeetupById(meetupId);
-        System.out.println(meetup);
-        List<RegistrationMeetupListResponseDTO> registrationDtoList = registrationService.
-                convertEntityToRegistrationMeetupListResponseDTO(meetup.getRegistrationsList());
-
-        MeetupResponseListDTO meetupDto = new MeetupResponseListDTO(
-                meetup.getId(),
-                meetup.getEvent(),
-                meetup.getMeetupDate(),
-                registrationDtoList);
-
-
-        return ResponseEntity.ok().body(meetupDto);
-    }
-
-    //post dos atributos do meetup
-    @PostMapping
+    @PostMapping(value = "/registerMeetup")
     private ResponseEntity<MeetupResponseDTO> saveMeetup(@RequestBody Meetup meetup){
         meetupService.saveMeetup(meetup);
         return ResponseEntity.ok().body(meetupService.convertEntityToResponseDTO(meetup));
     }
 
-    //update do meetup para adicionar um registration
-    @PutMapping(value = "/{meetupId}")
+    @PutMapping(value = "/registerRegistration/{meetupId}")
     private ResponseEntity<MeetupResponseUpdateDTO> updateMeetup(@PathVariable Integer meetupId, @RequestBody String number){
 
         Meetup meetup = meetupService.findMeetupById(meetupId);
@@ -81,7 +50,7 @@ public class MeetupController {
 
         //DTO
         RegistrationMeetupUpdateResponseDTO registrationDTO = registrationService.
-                                                            convertEntityToRegistrationMeetupUpdateResponseDTO(registration);
+                convertEntityToRegistrationMeetupUpdateResponseDTO(registration);
 
         MeetupResponseUpdateDTO meetupDto = new MeetupResponseUpdateDTO(
                 meetup.getId(),
@@ -92,7 +61,35 @@ public class MeetupController {
         return ResponseEntity.ok().body(meetupDto);
     }
 
-    //TERMINAR ESCOPO ESCRITO
+    @GetMapping(value = "/listRegistrations/{id}")
+    private ResponseEntity<MeetupResponseListDTO> listAllRegistrationsByMeetup(@PathVariable(name = "id") Integer meetupId){
+        Meetup meetup = meetupService.findMeetupById(meetupId);
+
+        List<RegistrationMeetupListResponseDTO> registrationDtoList = registrationService.
+                convertEntityToRegistrationMeetupListResponseDTO(meetup.getRegistrationsList());
+
+        MeetupResponseListDTO meetupDto = new MeetupResponseListDTO(
+                meetup.getId(),
+                meetup.getEvent(),
+                meetup.getMeetupDate(),
+                registrationDtoList);
+
+        return ResponseEntity.ok().body(meetupDto);
+    }
+
+    @GetMapping(value = "/listMeetups")
+    private ResponseEntity<List<MeetupResponseDTO>> listAllMeetups(){
+        List<MeetupResponseDTO> list = meetupService.findMeetups()
+                .stream().map(x -> new MeetupResponseDTO(
+                        x.getId(),
+                        x.getEvent(),
+                        x.getMeetupDate()))
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok().body(list);
+    }
+
+    //terminar update dos atributos do meetup com MeetupResponseDTO
 
 
 }

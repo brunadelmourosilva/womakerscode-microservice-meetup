@@ -4,7 +4,9 @@ import com.brunadelmouro.microservicemeetup.models.Meetup;
 import com.brunadelmouro.microservicemeetup.models.Registration;
 import com.brunadelmouro.microservicemeetup.models.dto.meetup.MeetupResponseDTO;
 import com.brunadelmouro.microservicemeetup.models.dto.meetup.MeetupResponseListDTO;
+import com.brunadelmouro.microservicemeetup.models.dto.meetup.MeetupResponseUpdateDTO;
 import com.brunadelmouro.microservicemeetup.models.dto.registration.RegistrationMeetupListResponseDTO;
+import com.brunadelmouro.microservicemeetup.models.dto.registration.RegistrationMeetupUpdateResponseDTO;
 import com.brunadelmouro.microservicemeetup.services.impl.MeetupServiceImpl;
 import com.brunadelmouro.microservicemeetup.services.impl.RegistrationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,20 +65,31 @@ public class MeetupController {
 
     //update do meetup para adicionar um registration
     @PutMapping(value = "/{meetupId}")
-    private ResponseEntity<Meetup> updateMeetup(@PathVariable Integer meetupId, @RequestBody String number){
+    private ResponseEntity<MeetupResponseUpdateDTO> updateMeetup(@PathVariable Integer meetupId, @RequestBody String number){
 
         Meetup meetup = meetupService.findMeetupById(meetupId);
 
         number = number.substring(29, number.length()-4);
         Registration registration = registrationService.findRegistrationByRegistrationNumber(number);
+
+        //associação
         registration.getMeetups().add(meetup);
         meetup.getRegistrationsList().add(registration);
 
         registrationService.updateRegistration(registration);
         meetupService.updateMeetup(meetup);
 
-        System.out.println("VAI SALVAR!!!!!!!!!!!!!!");
-        return ResponseEntity.ok().body(meetup);
+        //DTO
+        RegistrationMeetupUpdateResponseDTO registrationDTO = registrationService.
+                                                            convertEntityToRegistrationMeetupUpdateResponseDTO(registration);
+
+        MeetupResponseUpdateDTO meetupDto = new MeetupResponseUpdateDTO(
+                meetup.getId(),
+                meetup.getEvent(),
+                meetup.getMeetupDate(),
+                registrationDTO);
+
+        return ResponseEntity.ok().body(meetupDto);
     }
 
 

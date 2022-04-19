@@ -2,6 +2,7 @@ package com.brunadelmouro.microservicemeetup.services.impl;
 
 import com.brunadelmouro.microservicemeetup.models.Registration;
 import com.brunadelmouro.microservicemeetup.models.dto.registration.RegistrationMeetupListResponseDTO;
+import com.brunadelmouro.microservicemeetup.models.dto.registration.RegistrationMeetupUpdateResponseDTO;
 import com.brunadelmouro.microservicemeetup.models.dto.registration.RegistrationResponseDTO;
 import com.brunadelmouro.microservicemeetup.repositories.RegistrationRepository;
 import com.brunadelmouro.microservicemeetup.services.RegistrationService;
@@ -89,5 +90,12 @@ public class RegistrationServiceImpl implements RegistrationService {
         return registrationList.stream().map(registration ->
             new RegistrationMeetupListResponseDTO(registration.getName(), registration.getEmail())
         ).collect(Collectors.toList());
+    }
+
+    public RegistrationMeetupUpdateResponseDTO convertEntityToRegistrationMeetupUpdateResponseDTO(Registration registration){
+        return new RegistrationMeetupUpdateResponseDTO(registration.getId(),
+                                                       registration.getName(),
+                                                       registration.getEmail(),
+                                                       registration.getNumber());
     }
 }

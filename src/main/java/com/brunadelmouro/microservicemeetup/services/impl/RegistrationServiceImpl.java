@@ -31,22 +31,6 @@ public class RegistrationServiceImpl implements RegistrationService {
         return registrationRepository.save(registration);
     }
 
-    public RegistrationResponseDTO convertEntityToResponseDTO(Registration registration) {
-        return new RegistrationResponseDTO(registration.getId(), registration.getName(), registration.getEmail(), registration.getDateOfRegistration(), registration.getNumber());
-    }
-
-    public void validateRegistrationExistsByEmail(String email){
-        if(registrationRepository.existsByEmail(email))
-            throw new IllegalArgumentException("Objeto já cadastrado");
-    }
-
-    public Registration validateRegistrationExists(Registration registration){
-        if (registration == null || registration.getId() == null) {
-            throw new IllegalArgumentException("Registration id cannot be null");
-        }
-        return registration;
-    }
-
     @Override
     public Registration findRegistrationById(Integer id) {
         Optional<Registration> obj = registrationRepository.findById(id);
@@ -80,10 +64,28 @@ public class RegistrationServiceImpl implements RegistrationService {
         return registrationRepository.save(newRegistration);
     }
 
+
     @Override
     public void deleteRegistration(Registration registration) {
         validateRegistrationExists(registration);
         this.registrationRepository.delete(registration);
+    }
+
+    public void validateRegistrationExistsByEmail(String email){
+        if(registrationRepository.existsByEmail(email))
+            throw new IllegalArgumentException("Object already exists");
+    }
+
+
+    public Registration validateRegistrationExists(Registration registration){
+        if (registration == null || registration.getId() == null) {
+            throw new IllegalArgumentException("Registration id cannot be null");
+        }
+        return registration;
+    }
+
+    public RegistrationResponseDTO convertEntityToResponseDTO(Registration registration) {
+        return new RegistrationResponseDTO(registration.getId(), registration.getName(), registration.getEmail(), registration.getDateOfRegistration(), registration.getNumber());
     }
 
     public List<RegistrationMeetupListResponseDTO> convertEntityToRegistrationMeetupListResponseDTO(List<Registration> registrationList){

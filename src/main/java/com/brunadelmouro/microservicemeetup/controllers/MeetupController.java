@@ -92,6 +92,7 @@ public class MeetupController {
         return ResponseEntity.ok().body(meetupDto);
     }
 
+    //TERMINAR ESCOPO ESCRITO
 
 
 }

@@ -28,9 +28,9 @@ _Em andamento_
 - [x] Implementação do repository
 - [x] Implementação de DTO's
 - [x] Adicionar MySQL ao projeto
-- [ ] Tratamento de exceptions + validações
+- [ ] Tratamento de exceptions + obj cadastrado por e-mail + validações
 - [x] Envio de e-mail ao registrar o cadastro
-- [x] Envio de e-mail ao registrar em um meetup
+- [ ] Envio de e-mail ao registrar em um meetup
 - [ ] Adicionar Spring Security com token JWT
 - [ ] Swagger
 - [ ] Desenhar diagrama do sistema

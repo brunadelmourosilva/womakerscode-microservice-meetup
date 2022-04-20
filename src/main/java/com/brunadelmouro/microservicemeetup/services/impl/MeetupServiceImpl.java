@@ -46,8 +46,11 @@ public class MeetupServiceImpl implements MeetupService {
 
     @Override
     public void deleteMeetup(Meetup meetup) {
-        //deletar meetup se o mesmo estiver com  a lista de registrations vazia
-        //caso contrário, retornar uma exceção personalizada
+        validateMeetupExists(meetup);
+        if(!meetup.getRegistrationsList().isEmpty())
+            throw new IllegalArgumentException("Meetup cannot be deleted. There are registrations.");
+        else
+            this.meetupRepository.delete(meetup);
     }
 
 

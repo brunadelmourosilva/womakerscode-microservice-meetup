@@ -58,11 +58,11 @@ public class RegistrationController {
 
     //Consertar
     @PutMapping(value = "/{id}")
-    private ResponseEntity<Registration> updateRegistration(@PathVariable Integer id, @RequestBody Registration registration) {
+    private ResponseEntity<Registration> updateRegistration(@PathVariable Integer id, @RequestBody Registration newRegistration) {
+        Registration oldRegistration = registrationService.findRegistrationById(id);
 
-        Registration newRegistration = registrationService.findRegistrationById(id);
-
-        newRegistration = registrationService.updateRegistration(registration); //erro
+        newRegistration.setId(oldRegistration.getId());
+        registrationService.updateRegistration(newRegistration);
 
         return ResponseEntity.ok().body(newRegistration);
     }

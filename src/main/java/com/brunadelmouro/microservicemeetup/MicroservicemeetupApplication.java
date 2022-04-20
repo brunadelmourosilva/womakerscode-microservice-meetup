@@ -11,6 +11,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.time.LocalDate;
+
 @SpringBootApplication
 public class MicroservicemeetupApplication implements CommandLineRunner {
 
@@ -33,18 +35,18 @@ public class MicroservicemeetupApplication implements CommandLineRunner {
 		registrationService.saveRegistration(
 				new Registration(
 						null,
-						"Alex",
-						"alex@gmail.com",
+						"Bruna Delmouro",
+						"brunadelmouro@gmail.com",
 						"123",
-						"18/04/2022",
+						LocalDate.now().toString(),
 						"001")
 		);
 
 		meetupService.saveMeetup(
 				new Meetup(
 						null,
-						"Festa com tequila",
-						"20/04/2022"
+						"Palestra sobre microservices",
+						"25/04/2022"
 		));
 	}
 }

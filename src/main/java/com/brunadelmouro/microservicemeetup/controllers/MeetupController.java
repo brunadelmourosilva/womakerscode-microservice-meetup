@@ -89,7 +89,21 @@ public class MeetupController {
         return ResponseEntity.ok().body(list);
     }
 
-    //terminar update dos atributos do meetup com MeetupResponseDTO
+    @PutMapping("/{id}")
+    public ResponseEntity<MeetupResponseDTO> updateMeetupById(@PathVariable Integer id, @RequestBody Meetup newMeetup) {
+        Meetup oldMeetup = meetupService.findMeetupById(id);
 
+        newMeetup.setId(oldMeetup.getId());
+        meetupService.updateMeetup(newMeetup);
+
+        return ResponseEntity.ok().body(meetupService.convertEntityToResponseDTO(newMeetup));
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteMeetupById(@PathVariable Integer id) {
+        Meetup meetup = meetupService.findMeetupById(id);
+
+        meetupService.deleteMeetup(meetup);
+    }
 
 }

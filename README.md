@@ -2,7 +2,21 @@
 
 ## RestAPI para agendamento de meetups
 ---
+
+### Status 📈
+_Em andamento_ 
+
+---
+
 ### Tecnologias 🖥️
+
+* Java 11
+* Gradle
+* Spring
+* JPA
+* MySQL
+* TDD Test Driven Development
+* Azure functions
 
 ---
 ### Checklist ✔️

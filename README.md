@@ -23,14 +23,14 @@ _Em andamento_
 
 - [x] Implementação da classe Registration
 - [x] Implementação da classe Meetup
-- [ ] Implementação da classe de service
-- [ ] Implementação da classe de controller
+- [x] Implementação da camada service
+- [x] Implementação da camada controller
 - [x] Implementação do repository
 - [x] Implementação de DTO's
 - [x] Adicionar MySQL ao projeto
-- [ ] Tratamento de exceptions
-- [ ] Adicionar HATEOAS
-- [ ] Envio de e-mail ao registrar meetup
+- [ ] Tratamento de exceptions + validações
+- [x] Envio de e-mail ao registrar o cadastro
+- [x] Envio de e-mail ao registrar em um meetup
 - [ ] Adicionar Spring Security com token JWT
 - [ ] Swagger
 - [ ] Desenhar diagrama do sistema

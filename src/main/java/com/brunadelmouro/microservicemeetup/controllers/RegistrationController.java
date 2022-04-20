@@ -22,8 +22,6 @@ public class RegistrationController {
     @Autowired
     private RegistrationServiceImpl registrationService;
 
-    private ModelMapper modelMapper;
-
     @PostMapping
     private ResponseEntity<RegistrationResponseDTO> saveRegistration(@RequestBody Registration registration) {
         registrationService.saveRegistration(registration);
@@ -56,7 +54,6 @@ public class RegistrationController {
         return new PageImpl<>(list, pageRequest, result.getTotalElements());
     }
 
-    //Consertar
     @PutMapping(value = "/{id}")
     private ResponseEntity<Registration> updateRegistration(@PathVariable Integer id, @RequestBody Registration newRegistration) {
         Registration oldRegistration = registrationService.findRegistrationById(id);

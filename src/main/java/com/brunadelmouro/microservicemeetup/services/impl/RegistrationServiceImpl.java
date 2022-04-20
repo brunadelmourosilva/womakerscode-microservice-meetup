@@ -1,12 +1,12 @@
 package com.brunadelmouro.microservicemeetup.services.impl;
 
+import com.brunadelmouro.microservicemeetup.exceptions.ObjectNotFoundException;
 import com.brunadelmouro.microservicemeetup.models.Registration;
 import com.brunadelmouro.microservicemeetup.models.dto.registration.RegistrationMeetupListResponseDTO;
 import com.brunadelmouro.microservicemeetup.models.dto.registration.RegistrationMeetupUpdateResponseDTO;
 import com.brunadelmouro.microservicemeetup.models.dto.registration.RegistrationResponseDTO;
 import com.brunadelmouro.microservicemeetup.repositories.RegistrationRepository;
 import com.brunadelmouro.microservicemeetup.services.RegistrationService;
-import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -34,7 +34,7 @@ public class RegistrationServiceImpl implements RegistrationService {
     @Override
     public Registration findRegistrationById(Integer id) {
         Optional<Registration> obj = registrationRepository.findById(id);
-        return obj.orElseThrow(() -> new ObjectNotFoundException(1, "Object not found"));
+        return obj.orElseThrow(() -> new ObjectNotFoundException("Registration not found"));
     }
 
     @Override

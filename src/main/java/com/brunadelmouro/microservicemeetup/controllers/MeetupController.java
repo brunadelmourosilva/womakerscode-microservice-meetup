@@ -77,6 +77,14 @@ public class MeetupController {
         return ResponseEntity.ok().body(meetupDto);
     }
 
+    @GetMapping(value = "/{id}")
+    private ResponseEntity<MeetupResponseDTO> findMeetupById(@PathVariable Integer id){
+        Meetup foundMeetup = meetupService.findMeetupById(id);
+        return ResponseEntity
+                .ok()
+                .body(meetupService.convertEntityToResponseDTO(foundMeetup));
+    }
+
     @GetMapping(value = "/listMeetups")
     private ResponseEntity<List<MeetupResponseDTO>> listAllMeetups(){
         List<MeetupResponseDTO> list = meetupService.findMeetups()

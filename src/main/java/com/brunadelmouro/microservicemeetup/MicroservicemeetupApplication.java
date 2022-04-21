@@ -38,7 +38,6 @@ public class MicroservicemeetupApplication implements CommandLineRunner {
 						"Bruna Delmouro",
 						"brunadelmouro@gmail.com",
 						"123",
-						LocalDate.now().toString(),
 						"001")
 		);
 

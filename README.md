@@ -28,6 +28,7 @@ _Em andamento_
 - [x] Implementação do repository
 - [x] Implementação de DTO's
 - [x] Adicionar MySQL ao projeto
+- [ ] Adicionar LOGs à aplicação
 - [ ] Tratamento de exceptions + obj cadastrado por e-mail + validações
 - [x] Envio de e-mail ao registrar o cadastro
 - [ ] Envio de e-mail ao registrar em um meetup

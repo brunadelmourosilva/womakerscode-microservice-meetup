@@ -1,8 +1,12 @@
 package com.brunadelmouro.microservicemeetup.models;
 
+import com.brunadelmouro.microservicemeetup.utils.DateUtils;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.List;
 
@@ -40,12 +44,12 @@ public class Registration implements Serializable {
     public Registration() {
     }
 
-    public Registration(Integer id, String name, String email, String password, String dateOfRegistration, String registrationNumber) {
+    public Registration(Integer id, String name, String email, String password, String registrationNumber) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
-        this.dateOfRegistration = dateOfRegistration;
+        this.dateOfRegistration = DateUtils.convertSystemTimeMillisToString(System.currentTimeMillis());
         this.number = registrationNumber;
     }
 

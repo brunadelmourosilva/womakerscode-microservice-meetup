@@ -27,6 +27,7 @@ public class EmailServiceImpl implements EmailService {
         SimpleMailMessage sm =new SimpleMailMessage();
 
         //INSERIR HTML E CUSTOMIZAR MENSAGEM
+        //Envio de email para meetup
         sm.setFrom(sender);
         sm.setTo(registration.getEmail());
         sm.setSubject("Your registration was created with success!");

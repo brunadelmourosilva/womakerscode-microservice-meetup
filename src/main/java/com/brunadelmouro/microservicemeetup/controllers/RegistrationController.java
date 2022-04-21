@@ -2,6 +2,7 @@ package com.brunadelmouro.microservicemeetup.controllers;
 
 import com.brunadelmouro.microservicemeetup.models.Meetup;
 import com.brunadelmouro.microservicemeetup.models.Registration;
+import com.brunadelmouro.microservicemeetup.models.dto.registration.RegistrationRequestDTO;
 import com.brunadelmouro.microservicemeetup.models.dto.registration.RegistrationResponseDTO;
 import com.brunadelmouro.microservicemeetup.services.impl.RegistrationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.modelmapper.ModelMapper;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,9 +25,10 @@ public class RegistrationController {
     private RegistrationServiceImpl registrationService;
 
     @PostMapping
-    private ResponseEntity<RegistrationResponseDTO> saveRegistration(@RequestBody Registration registration) {
-        registrationService.saveRegistration(registration);
-        return ResponseEntity.ok().body(registrationService.convertEntityToResponseDTO(registration));
+    private ResponseEntity<RegistrationResponseDTO> saveRegistration(@Valid @RequestBody RegistrationRequestDTO registrationDto) {
+        Registration entityRegistration = registrationService.convertDtoToEntity(registrationDto);
+        registrationService.saveRegistration(entityRegistration);
+        return ResponseEntity.ok().body(registrationService.convertEntityToResponseDTO(entityRegistration));
     }
 
     @GetMapping(value = "/{id}")
@@ -55,7 +58,8 @@ public class RegistrationController {
     }
 
     @PutMapping(value = "/{id}")
-    private ResponseEntity<Registration> updateRegistration(@PathVariable Integer id, @RequestBody Registration newRegistration) {
+    private ResponseEntity<Registration> updateRegistration(@PathVariable Integer id, @Valid @RequestBody RegistrationRequestDTO registrationDto) {
+        Registration newRegistration = registrationService.convertDtoToEntity(registrationDto);
         Registration oldRegistration = registrationService.findRegistrationById(id);
 
         newRegistration.setId(oldRegistration.getId());

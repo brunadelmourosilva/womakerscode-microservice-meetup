@@ -2,6 +2,7 @@ package com.brunadelmouro.microservicemeetup.controllers;
 
 import com.brunadelmouro.microservicemeetup.exceptions.ObjectNotFoundException;
 import com.brunadelmouro.microservicemeetup.exceptions.StandardError;
+import com.brunadelmouro.microservicemeetup.utils.DateUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.ObjectError;
@@ -20,7 +21,7 @@ public class ExceptionController {
     public ResponseEntity<StandardError> objectNotFound(ObjectNotFoundException e){
         return ResponseEntity.ok(
                 new StandardError(e.getMessage(),
-                        System.currentTimeMillis(),
+                        DateUtils.convertSystemTimeMillisToString(System.currentTimeMillis()),
                         HttpStatus.NOT_FOUND.value()));
     }
 
@@ -28,11 +29,13 @@ public class ExceptionController {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<List<StandardError>> beanValidation(MethodArgumentNotValidException e){
 
-        List<StandardError> erros = e.getAllErrors().stream().map(
-                x -> new StandardError(x.getDefaultMessage(), System.currentTimeMillis(), HttpStatus.BAD_REQUEST.value())
+        List<StandardError> errors = e.getAllErrors().stream().map(
+                x -> new StandardError(x.getDefaultMessage(),
+                        DateUtils.convertSystemTimeMillisToString(System.currentTimeMillis()),
+                        HttpStatus.BAD_REQUEST.value())
                         ).collect(Collectors.toList());
 
-        return ResponseEntity.badRequest().body(erros);
+        return ResponseEntity.badRequest().body(errors);
     }
 
 

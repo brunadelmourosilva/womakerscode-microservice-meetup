@@ -4,6 +4,7 @@ import com.brunadelmouro.microservicemeetup.exceptions.ObjectNotFoundException;
 import com.brunadelmouro.microservicemeetup.models.Registration;
 import com.brunadelmouro.microservicemeetup.models.dto.registration.RegistrationMeetupListResponseDTO;
 import com.brunadelmouro.microservicemeetup.models.dto.registration.RegistrationMeetupUpdateResponseDTO;
+import com.brunadelmouro.microservicemeetup.models.dto.registration.RegistrationRequestDTO;
 import com.brunadelmouro.microservicemeetup.models.dto.registration.RegistrationResponseDTO;
 import com.brunadelmouro.microservicemeetup.repositories.RegistrationRepository;
 import com.brunadelmouro.microservicemeetup.services.RegistrationService;
@@ -103,5 +104,15 @@ public class RegistrationServiceImpl implements RegistrationService {
                                                        registration.getName(),
                                                        registration.getEmail(),
                                                        registration.getNumber());
+    }
+
+    public Registration convertDtoToEntity(RegistrationRequestDTO registrationRequestDTO){
+        return new Registration(
+                null,
+                registrationRequestDTO.getName(),
+                registrationRequestDTO.getEmail(),
+                registrationRequestDTO.getPassword(),
+                registrationRequestDTO.getNumber()
+        );
     }
 }

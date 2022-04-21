@@ -32,7 +32,7 @@ public class RegistrationServiceImpl implements RegistrationService {
     @Override
     public Registration saveRegistration(Registration registration) {
         validateRegistrationExistsByEmail(registration.getEmail());
-        emailService.sendEmail(registration);
+        //emailService.sendEmail(registration);
         return registrationRepository.save(registration);
     }
 

@@ -25,6 +25,14 @@ public class ExceptionController {
                         HttpStatus.NOT_FOUND.value()));
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<StandardError> illegalArgument(IllegalArgumentException e){
+        return ResponseEntity.ok(
+                new StandardError(e.getMessage(),
+                        DateUtils.convertSystemTimeMillisToString(System.currentTimeMillis()),
+                        HttpStatus.NOT_FOUND.value()));
+    }
+
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<List<StandardError>> beanValidation(MethodArgumentNotValidException e){

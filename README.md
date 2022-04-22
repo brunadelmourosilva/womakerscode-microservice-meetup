@@ -34,6 +34,7 @@ _Em andamento_
 - [x] Tratamento de validação em Meetup
 - [x] Envio de e-mail ao registrar o cadastro
 - [ ] Envio de e-mail ao registrar em um meetup
+- [ ] Número de registro como _auto generated_[opcional]
 - [ ] Adicionar Spring Security com token JWT
 - [ ] Swagger
 - [ ] Desenhar diagrama do sistema

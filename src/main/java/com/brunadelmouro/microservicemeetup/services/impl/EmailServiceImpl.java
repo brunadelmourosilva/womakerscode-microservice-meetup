@@ -1,5 +1,6 @@
 package com.brunadelmouro.microservicemeetup.services.impl;
 
+import com.brunadelmouro.microservicemeetup.models.Meetup;
 import com.brunadelmouro.microservicemeetup.models.Registration;
 import com.brunadelmouro.microservicemeetup.services.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,17 +23,25 @@ public class EmailServiceImpl implements EmailService {
         System.out.println("Enviou e-mail!");
     }
 
+    public void sendEmail(Meetup meetup){
+        //TERMINAR
+    }
+
     @Override
     public SimpleMailMessage prepareSimpleMailMessageFromRegistration(Registration registration) {
         SimpleMailMessage sm =new SimpleMailMessage();
 
         //INSERIR HTML E CUSTOMIZAR MENSAGEM
-        //Envio de email para meetup
         sm.setFrom(sender);
         sm.setTo(registration.getEmail());
         sm.setSubject("Your registration was created with success!");
         sm.setText("Hello " + registration.getName() + "! \n You already subscribed on meetup!");
 
         return sm;
+    }
+
+    public SimpleMailMessage prepareSimpleMailMessageFromRegistration(Meetup meetup){
+        //TERMINAR
+        return null;
     }
 }

@@ -8,15 +8,15 @@ import javax.validation.constraints.Pattern;
 public class RegistrationRequestDTO {
 
     @NotNull(message = "The field NAME cannot be null")
-    @Length(min = 3, max = 100, message = "The field NAME needs to be between 3 and 100")
+    @Length(min = 3, max = 100, message = "The field NAME needs to be between 3 and 100 characters")
     private String name;
 
     @NotNull(message = "The field EMAIL cannot be null")
-    @Pattern(regexp = "^(.+)@(.+)$", message = "The field EMAIL needs to be on the following pattern? xxx@xxx")
+    @Pattern(regexp = "^(.+)@(.+)$", message = "The field EMAIL needs to be on the following pattern: xxx@xxx")
     private String email;
 
     @NotNull(message = "The field PASSWORD cannot be null")
-    @Length(min = 4, max = 10, message =  "The field PASSWORD needs to be between 4 and 10")
+    @Length(min = 4, max = 10, message =  "The field PASSWORD needs to be between 4 and 10 characters")
     private String password;
 
     @NotNull(message = "The field NUMBER cannot be null")

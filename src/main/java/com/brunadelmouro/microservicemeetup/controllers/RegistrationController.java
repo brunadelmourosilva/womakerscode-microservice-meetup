@@ -28,6 +28,7 @@ public class RegistrationController {
     private ResponseEntity<RegistrationResponseDTO> saveRegistration(@Valid @RequestBody RegistrationRequestDTO registrationDto) {
         Registration entityRegistration = registrationService.convertDtoToEntity(registrationDto);
         registrationService.saveRegistration(entityRegistration);
+
         return ResponseEntity.ok().body(registrationService.convertEntityToResponseDTO(entityRegistration));
     }
 

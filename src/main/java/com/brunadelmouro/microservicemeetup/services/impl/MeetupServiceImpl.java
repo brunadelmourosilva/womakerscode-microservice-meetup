@@ -2,6 +2,7 @@ package com.brunadelmouro.microservicemeetup.services.impl;
 
 import com.brunadelmouro.microservicemeetup.exceptions.ObjectNotFoundException;
 import com.brunadelmouro.microservicemeetup.models.Meetup;
+import com.brunadelmouro.microservicemeetup.models.dto.meetup.MeetupRequestDTO;
 import com.brunadelmouro.microservicemeetup.models.dto.meetup.MeetupResponseDTO;
 import com.brunadelmouro.microservicemeetup.repositories.MeetupRepository;
 import com.brunadelmouro.microservicemeetup.services.MeetupService;
@@ -74,5 +75,11 @@ public class MeetupServiceImpl implements MeetupService {
             throw new IllegalArgumentException("Meetup id cannot be null");
         }
         return meetup;
+    }
+
+    public Meetup convertEntityToDto(MeetupRequestDTO meetupRequestDTO){
+        return new Meetup(null,
+                            meetupRequestDTO.getEvent(),
+                            meetupRequestDTO.getMeetupDate());
     }
 }

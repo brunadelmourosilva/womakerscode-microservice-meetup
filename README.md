@@ -29,9 +29,9 @@ _Em andamento_
 - [x] Implementação de DTO's
 - [x] Adicionar MySQL ao projeto
 - [ ] Adicionar LOGs à aplicação
-- [ ] Tratamento de exceptions + obj cadastrado por e-mail
+- [x] Tratamento de exceptions
 - [x] Tratamento de validação em Registration
-- [ ] Tratamento de validação em Meetup
+- [x] Tratamento de validação em Meetup
 - [x] Envio de e-mail ao registrar o cadastro
 - [ ] Envio de e-mail ao registrar em um meetup
 - [ ] Adicionar Spring Security com token JWT

@@ -2,6 +2,7 @@ package com.brunadelmouro.microservicemeetup.controllers;
 
 import com.brunadelmouro.microservicemeetup.models.Meetup;
 import com.brunadelmouro.microservicemeetup.models.Registration;
+import com.brunadelmouro.microservicemeetup.models.dto.meetup.MeetupRequestDTO;
 import com.brunadelmouro.microservicemeetup.models.dto.meetup.MeetupResponseDTO;
 import com.brunadelmouro.microservicemeetup.models.dto.meetup.MeetupResponseListDTO;
 import com.brunadelmouro.microservicemeetup.models.dto.meetup.MeetupResponseUpdateDTO;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,14 +30,15 @@ public class MeetupController {
 
 
     @PostMapping(value = "/registerMeetup")
-    private ResponseEntity<MeetupResponseDTO> saveMeetup(@RequestBody Meetup meetup){
+    private ResponseEntity<MeetupResponseDTO> saveMeetup(@Valid @RequestBody MeetupRequestDTO meetupRequestDTO){
+        Meetup meetup = meetupService.convertEntityToDto(meetupRequestDTO);
         meetupService.saveMeetup(meetup);
+
         return ResponseEntity.ok().body(meetupService.convertEntityToResponseDTO(meetup));
     }
 
     @PutMapping(value = "/registerRegistration/{meetupId}")
     private ResponseEntity<MeetupResponseUpdateDTO> updateMeetup(@PathVariable Integer meetupId, @RequestBody String number){
-
         Meetup meetup = meetupService.findMeetupById(meetupId);
 
         number = number.substring(29, number.length()-4);
@@ -80,6 +83,7 @@ public class MeetupController {
     @GetMapping(value = "/{id}")
     private ResponseEntity<MeetupResponseDTO> findMeetupById(@PathVariable Integer id){
         Meetup foundMeetup = meetupService.findMeetupById(id);
+
         return ResponseEntity
                 .ok()
                 .body(meetupService.convertEntityToResponseDTO(foundMeetup));
@@ -98,7 +102,8 @@ public class MeetupController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<MeetupResponseDTO> updateMeetupById(@PathVariable Integer id, @RequestBody Meetup newMeetup) {
+    public ResponseEntity<MeetupResponseDTO> updateMeetupById(@PathVariable Integer id, @Valid @RequestBody MeetupRequestDTO meetupRequestDTO) {
+        Meetup newMeetup = meetupService.convertEntityToDto(meetupRequestDTO);
         Meetup oldMeetup = meetupService.findMeetupById(id);
 
         newMeetup.setId(oldMeetup.getId());

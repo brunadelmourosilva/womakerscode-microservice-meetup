@@ -38,7 +38,7 @@ _Em andamento_
 - [ ] Adicionar Spring Security com token JWT
 - [ ] Swagger
 - [ ] Desenhar diagrama do sistema
-- [ ] Testes locais via postman
+- [x] Testes locais via postman
 - [ ] Deploy no Azure
 
 ### Checklist para testes 🧪

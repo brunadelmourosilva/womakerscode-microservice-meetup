@@ -37,7 +37,7 @@ _Em andamento_
 - [ ] Número de registro como _auto generated_[opcional]
 - [ ] Adicionar Spring Security com token JWT
 - [ ] Swagger
-- [ ] Desenhar diagrama do sistema
+- [x] Desenhar diagrama do sistema
 - [x] Testes locais via postman
 - [ ] Deploy no Azure
 

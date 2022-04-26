@@ -4,6 +4,7 @@ import com.brunadelmouro.microservicemeetup.models.Meetup;
 import com.brunadelmouro.microservicemeetup.models.Registration;
 import com.brunadelmouro.microservicemeetup.models.dto.registration.RegistrationRequestDTO;
 import com.brunadelmouro.microservicemeetup.models.dto.registration.RegistrationResponseDTO;
+import com.brunadelmouro.microservicemeetup.services.impl.EmailServiceImpl;
 import com.brunadelmouro.microservicemeetup.services.impl.RegistrationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,10 +25,16 @@ public class RegistrationController {
     @Autowired
     private RegistrationServiceImpl registrationService;
 
+    @Autowired
+    private EmailServiceImpl emailService;
+
     @PostMapping
     private ResponseEntity<RegistrationResponseDTO> saveRegistration(@Valid @RequestBody RegistrationRequestDTO registrationDto) {
         Registration entityRegistration = registrationService.convertDtoToEntity(registrationDto);
         registrationService.saveRegistration(entityRegistration);
+
+        //email
+        emailService.sendEmail(entityRegistration);
 
         return ResponseEntity.ok().body(registrationService.convertEntityToResponseDTO(entityRegistration));
     }

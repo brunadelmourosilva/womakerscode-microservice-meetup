@@ -48,7 +48,7 @@ public class EmailServiceImpl implements EmailService {
         //INSERIR HTML E CUSTOMIZAR MENSAGEM
         sm.setFrom(sender);
         sm.setTo(registration.getEmail());
-        sm.setSubject("You were registered on Meetup " + meetup.getEvent() + "!");
+        sm.setSubject("You were registered on meetup: " + meetup.getEvent());
         sm.setText("Hello " + registration.getName() + "! \n\n" +
                    "Details: \n\n" +
                    "Event: " + meetup.getEvent() + "\n" +

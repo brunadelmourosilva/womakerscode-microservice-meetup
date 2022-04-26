@@ -6,6 +6,7 @@ import com.brunadelmouro.microservicemeetup.models.dto.registration.Registration
 import com.brunadelmouro.microservicemeetup.models.dto.registration.RegistrationResponseDTO;
 import com.brunadelmouro.microservicemeetup.services.impl.EmailServiceImpl;
 import com.brunadelmouro.microservicemeetup.services.impl.RegistrationServiceImpl;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -28,17 +29,16 @@ public class RegistrationController {
     @Autowired
     private EmailServiceImpl emailService;
 
+    @ApiOperation(value = "Salvar Registration")
     @PostMapping
     private ResponseEntity<RegistrationResponseDTO> saveRegistration(@Valid @RequestBody RegistrationRequestDTO registrationDto) {
         Registration entityRegistration = registrationService.convertDtoToEntity(registrationDto);
         registrationService.saveRegistration(entityRegistration);
 
-        //email
-        emailService.sendEmail(entityRegistration);
-
         return ResponseEntity.ok().body(registrationService.convertEntityToResponseDTO(entityRegistration));
     }
 
+    @ApiOperation(value = "Listar informações de um Registration pelo id")
     @GetMapping(value = "/{id}")
     private ResponseEntity<RegistrationResponseDTO> getRegistrationById(@PathVariable Integer id) {
         Registration registration = registrationService.findRegistrationById(id);
@@ -46,6 +46,7 @@ public class RegistrationController {
         return ResponseEntity.ok().body(registrationService.convertEntityToResponseDTO(registration));
     }
 
+    @ApiOperation(value = "Listar informações de um Registration pelo atributo number")
     @GetMapping(value = "registrationNumber/{id}")
     private ResponseEntity<RegistrationResponseDTO> getRegistrationByRegistrationNumber(@PathVariable("id") String number){
         Registration registration = registrationService.findRegistrationByRegistrationNumber(number);
@@ -53,8 +54,9 @@ public class RegistrationController {
         return ResponseEntity.ok().body(registrationService.convertEntityToResponseDTO(registration));
     }
 
+    @ApiOperation(value = "Listar informações de Registrations por Pageable")
     @GetMapping
-    public Page<RegistrationResponseDTO> findRegistrationByPage(Registration registration, Pageable pageRequest){
+    public Page<RegistrationResponseDTO> findRegistrationsByPage(Registration registration, Pageable pageRequest){
         Page<Registration> result = registrationService.findRegistrationPage(registration, pageRequest);
 
         List<RegistrationResponseDTO> list = result.getContent()
@@ -65,6 +67,7 @@ public class RegistrationController {
         return new PageImpl<>(list, pageRequest, result.getTotalElements());
     }
 
+    @ApiOperation(value = "Atualizar informações de um Registration")
     @PutMapping(value = "/{id}")
     private ResponseEntity<Registration> updateRegistration(@PathVariable Integer id, @Valid @RequestBody RegistrationRequestDTO registrationDto) {
         Registration newRegistration = registrationService.convertDtoToEntity(registrationDto);
@@ -76,6 +79,7 @@ public class RegistrationController {
         return ResponseEntity.ok().body(newRegistration);
     }
 
+    @ApiOperation(value = "Deletar Registration")
     @DeleteMapping("/{id}")
     public void deleteRegistrationById(@PathVariable Integer id) {
         Registration registration = registrationService.findRegistrationById(id);

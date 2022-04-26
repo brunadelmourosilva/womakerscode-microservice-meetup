@@ -12,6 +12,8 @@ import com.brunadelmouro.microservicemeetup.services.EmailService;
 import com.brunadelmouro.microservicemeetup.services.impl.EmailServiceImpl;
 import com.brunadelmouro.microservicemeetup.services.impl.MeetupServiceImpl;
 import com.brunadelmouro.microservicemeetup.services.impl.RegistrationServiceImpl;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +36,7 @@ public class MeetupController {
     private EmailServiceImpl emailService;
 
 
+    @ApiOperation(value = "Salvar Meetup")
     @PostMapping(value = "/registerMeetup")
     private ResponseEntity<MeetupResponseDTO> saveMeetup(@Valid @RequestBody MeetupRequestDTO meetupRequestDTO){
         Meetup meetup = meetupService.convertEntityToDto(meetupRequestDTO);
@@ -42,6 +45,7 @@ public class MeetupController {
         return ResponseEntity.ok().body(meetupService.convertEntityToResponseDTO(meetup));
     }
 
+    @ApiOperation(value = "Registrar usuário em um determinado Meetup")
     @PutMapping(value = "/registerRegistration/{meetupId}")
     private ResponseEntity<MeetupResponseUpdateDTO> updateMeetup(@PathVariable Integer meetupId, @RequestBody String number){
         Meetup meetup = meetupService.findMeetupById(meetupId);
@@ -72,6 +76,7 @@ public class MeetupController {
         return ResponseEntity.ok().body(meetupDto);
     }
 
+    @ApiOperation(value = "Listar Registrations pelo id do Meetup")
     @GetMapping(value = "/listRegistrations/{id}")
     private ResponseEntity<MeetupResponseListDTO> listAllRegistrationsByMeetup(@PathVariable(name = "id") Integer meetupId){
         Meetup meetup = meetupService.findMeetupById(meetupId);
@@ -88,6 +93,7 @@ public class MeetupController {
         return ResponseEntity.ok().body(meetupDto);
     }
 
+    @ApiOperation(value = "Listar informações de um Meetup pelo id")
     @GetMapping(value = "/{id}")
     private ResponseEntity<MeetupResponseDTO> findMeetupById(@PathVariable Integer id){
         Meetup foundMeetup = meetupService.findMeetupById(id);
@@ -97,6 +103,7 @@ public class MeetupController {
                 .body(meetupService.convertEntityToResponseDTO(foundMeetup));
     }
 
+    @ApiOperation(value = "Listar todos os Meetups cadastrados")
     @GetMapping(value = "/listMeetups")
     private ResponseEntity<List<MeetupResponseDTO>> listAllMeetups(){
         List<MeetupResponseDTO> list = meetupService.findMeetups()
@@ -109,6 +116,7 @@ public class MeetupController {
         return ResponseEntity.ok().body(list);
     }
 
+    @ApiOperation(value = "Atualizar informações de um Meetup")
     @PutMapping("/{id}")
     public ResponseEntity<MeetupResponseDTO> updateMeetupById(@PathVariable Integer id, @Valid @RequestBody MeetupRequestDTO meetupRequestDTO) {
         Meetup newMeetup = meetupService.convertEntityToDto(meetupRequestDTO);
@@ -120,6 +128,7 @@ public class MeetupController {
         return ResponseEntity.ok().body(meetupService.convertEntityToResponseDTO(newMeetup));
     }
 
+    @ApiOperation(value = "Deletar Meetup")
     @DeleteMapping("/{id}")
     public void deleteMeetupById(@PathVariable Integer id) {
         Meetup meetup = meetupService.findMeetupById(id);

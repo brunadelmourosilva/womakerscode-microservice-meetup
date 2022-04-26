@@ -26,10 +26,13 @@ public class RegistrationServiceImpl implements RegistrationService {
     @Autowired
     RegistrationRepository registrationRepository;
 
+    @Autowired
+    private EmailServiceImpl emailService;
 
     @Override
     public Registration saveRegistration(Registration registration) {
         validateRegistrationExistsByEmail(registration.getEmail());
+        //emailService.sendEmail(registration);
         return registrationRepository.save(registration);
     }
 

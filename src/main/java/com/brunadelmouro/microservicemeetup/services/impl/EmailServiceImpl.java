@@ -18,13 +18,15 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     public void sendEmail(Registration registration) {
-        SimpleMailMessage message =prepareSimpleMailMessageFromRegistration(registration);
+        SimpleMailMessage message = prepareSimpleMailMessageFromRegistration(registration);
         mailSender.send(message);
-        System.out.println("Enviou e-mail!");
+        System.out.println("E-mail sent!");
     }
 
-    public void sendEmail(Meetup meetup){
-        //TERMINAR
+    public void sendEmail(Meetup meetup, Registration registration){
+        SimpleMailMessage message = prepareSimpleMailMessageFromRegistration(meetup, registration);
+        mailSender.send(message);
+        System.out.println("E-mail sent!");
     }
 
     @Override
@@ -40,8 +42,19 @@ public class EmailServiceImpl implements EmailService {
         return sm;
     }
 
-    public SimpleMailMessage prepareSimpleMailMessageFromRegistration(Meetup meetup){
-        //TERMINAR
-        return null;
+    public SimpleMailMessage prepareSimpleMailMessageFromRegistration(Meetup meetup, Registration registration){
+        SimpleMailMessage sm = new SimpleMailMessage();
+
+        //INSERIR HTML E CUSTOMIZAR MENSAGEM
+        sm.setFrom(sender);
+        sm.setTo(registration.getEmail());
+        sm.setSubject("You were registered on Meetup " + meetup.getEvent() + "!");
+        sm.setText("Hello " + registration.getName() + "! \n\n" +
+                   "Details: \n\n" +
+                   "Event: " + meetup.getEvent() + "\n" +
+                   "Meetup date: " + meetup.getMeetupDate() + "\n" +
+                   "Registration number: " + registration.getNumber() + "\n");
+
+        return sm;
     }
 }

@@ -8,6 +8,8 @@ import com.brunadelmouro.microservicemeetup.models.dto.meetup.MeetupResponseList
 import com.brunadelmouro.microservicemeetup.models.dto.meetup.MeetupResponseUpdateDTO;
 import com.brunadelmouro.microservicemeetup.models.dto.registration.RegistrationMeetupListResponseDTO;
 import com.brunadelmouro.microservicemeetup.models.dto.registration.RegistrationMeetupUpdateResponseDTO;
+import com.brunadelmouro.microservicemeetup.services.EmailService;
+import com.brunadelmouro.microservicemeetup.services.impl.EmailServiceImpl;
 import com.brunadelmouro.microservicemeetup.services.impl.MeetupServiceImpl;
 import com.brunadelmouro.microservicemeetup.services.impl.RegistrationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,9 @@ public class MeetupController {
     @Autowired
     private RegistrationServiceImpl registrationService;
 
+    @Autowired
+    private EmailServiceImpl emailService;
+
 
     @PostMapping(value = "/registerMeetup")
     private ResponseEntity<MeetupResponseDTO> saveMeetup(@Valid @RequestBody MeetupRequestDTO meetupRequestDTO){
@@ -41,7 +46,7 @@ public class MeetupController {
     private ResponseEntity<MeetupResponseUpdateDTO> updateMeetup(@PathVariable Integer meetupId, @RequestBody String number){
         Meetup meetup = meetupService.findMeetupById(meetupId);
 
-        number = number.substring(29, number.length()-4);
+        number = number.substring(16, number.length()-4);
         Registration registration = registrationService.findRegistrationByRegistrationNumber(number);
 
         //associação
@@ -50,6 +55,9 @@ public class MeetupController {
 
         registrationService.updateRegistration(registration);
         meetupService.updateMeetup(meetup);
+
+        //email
+        emailService.sendEmail(meetup, registration);
 
         //DTO
         RegistrationMeetupUpdateResponseDTO registrationDTO = registrationService.

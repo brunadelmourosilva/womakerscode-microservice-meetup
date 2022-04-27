@@ -47,7 +47,7 @@ _Em andamento_
 - [ ] Meetup | Testes do repository
 - [ ] Meetup | Testes do controller
 - [ ] Meetup | Testes do service
-- [ ] Registration | Testes do repository
+- [x] Registration | Testes do repository
 - [ ] Registration | Testes do controller
 - [ ] Registration | Testes do service
 

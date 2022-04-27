@@ -14,38 +14,35 @@ import org.springframework.context.annotation.Bean;
 import java.time.LocalDate;
 
 @SpringBootApplication
-public class MicroservicemeetupApplication implements CommandLineRunner {
+public class MicroservicemeetupApplication {
 
 
-	private MeetupServiceImpl meetupService;
-	private RegistrationServiceImpl registrationService;
-
-	@Autowired
-	public MicroservicemeetupApplication(MeetupServiceImpl meetupService, RegistrationServiceImpl registrationService){
-		this.meetupService = meetupService;
-		this.registrationService = registrationService;
-	}
+//	@Autowired
+//	private MeetupServiceImpl meetupService;
+//
+//	@Autowired
+//	private RegistrationServiceImpl registrationService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(MicroservicemeetupApplication.class, args);
 	}
 
-	@Override
-	public void run(String... args) throws Exception {
-		registrationService.saveRegistration(
-				new Registration(
-						null,
-						"Bruna Delmouro",
-						"brunadelmouro@gmail.com",
-						"123",
-						"001")
-		);
-
-		meetupService.saveMeetup(
-				new Meetup(
-						null,
-						"Palestra sobre microservices",
-						"25/04/2022"
-		));
-	}
+//	@Override
+//	public void run(String... args) throws Exception {
+//		registrationService.saveRegistration(
+//				new Registration(
+//						null,
+//						"Bruna Delmouro",
+//						"brunadelmouro@gmail.com",
+//						"123",
+//						"001")
+//		);
+//
+//		meetupService.saveMeetup(
+//				new Meetup(
+//						null,
+//						"Palestra sobre microservices",
+//						"25/04/2022"
+//		));
+//	}
 }

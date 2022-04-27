@@ -1,6 +1,5 @@
 package com.brunadelmouro.microservicemeetup.config;
 
-import com.brunadelmouro.microservicemeetup.services.MeetupService;
 import com.brunadelmouro.microservicemeetup.services.impl.EmailServiceImpl;
 import com.brunadelmouro.microservicemeetup.services.impl.MeetupServiceImpl;
 import com.brunadelmouro.microservicemeetup.services.impl.RegistrationServiceImpl;
@@ -11,18 +10,17 @@ import org.springframework.context.annotation.Configuration;
 public class Config {
 
     @Bean
-    public MeetupServiceImpl meetupService(){
+    public MeetupServiceImpl meetupServiceImpl(){
         return new MeetupServiceImpl();
     }
 
     @Bean
-    public RegistrationServiceImpl registrationService(){
+    public RegistrationServiceImpl registrationServiceImpl(){
         return new RegistrationServiceImpl();
     }
 
     @Bean
-    public EmailServiceImpl emailService(){
+    public EmailServiceImpl emailServiceImpl(){
         return new EmailServiceImpl();
     }
-
 }

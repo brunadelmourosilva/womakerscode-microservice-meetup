@@ -84,7 +84,7 @@ public class RegistrationRepositoryTest {
     }
 
     @Test
-    @DisplayName("Should save a registration with success")
+    @DisplayName("Should save a Registration with success")
     public void saveRegistrationTest() {
 
         //cenário

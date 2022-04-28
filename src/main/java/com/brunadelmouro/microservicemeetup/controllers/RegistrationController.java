@@ -26,9 +26,6 @@ public class RegistrationController {
     @Autowired
     private RegistrationServiceImpl registrationService;
 
-    @Autowired
-    private EmailServiceImpl emailService;
-
     @ApiOperation(value = "Salvar Registration")
     @PostMapping
     private ResponseEntity<RegistrationResponseDTO> saveRegistration(@Valid @RequestBody RegistrationRequestDTO registrationDto) {

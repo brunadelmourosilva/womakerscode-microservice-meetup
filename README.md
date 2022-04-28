@@ -44,7 +44,7 @@ _Em andamento_
 
 ### Checklist para testes 🧪
 
-- [ ] Meetup | Testes do repository
+- [x] Meetup | Testes do repository
 - [ ] Meetup | Testes do controller
 - [ ] Meetup | Testes do service
 - [x] Registration | Testes do repository

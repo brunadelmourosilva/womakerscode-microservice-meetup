@@ -9,13 +9,7 @@ _descrição_
 _Em andamento_ 
 
 ---
-### Diagrama do sistema :bar_chart:
 
-![rest-api-meetups drawio (1)](https://user-images.githubusercontent.com/61791877/165970745-ac1c748d-2b00-4f70-8d70-1c6599024831.png)
-
-
-
----
 ### Tecnologias 🖥️
 
 * Java 11
@@ -26,6 +20,13 @@ _Em andamento_
 * TDD Test Driven Development
 * Azure functions
 
+---
+
+### Diagrama do sistema :bar_chart:
+
+![rest-api-meetups drawio (1)](https://user-images.githubusercontent.com/61791877/165970745-ac1c748d-2b00-4f70-8d70-1c6599024831.png)
+
+##### * _clique na imagem para uma melhor visualização_
 ---
 ### Checklist ✔️
 

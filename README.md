@@ -24,7 +24,7 @@ _Em andamento_
 
 ### Diagrama do sistema :bar_chart:
 
-![rest-api-meetups drawio (1)](https://user-images.githubusercontent.com/61791877/165970745-ac1c748d-2b00-4f70-8d70-1c6599024831.png)
+![rest-api-meetups drawio (2)](https://user-images.githubusercontent.com/61791877/165973200-c740f945-283b-434c-9bfa-0d8ccc636caf.png)
 
 ##### * _clique na imagem para uma melhor visualização_
 ---

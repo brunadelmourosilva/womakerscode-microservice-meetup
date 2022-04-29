@@ -44,6 +44,11 @@ public class Registration implements Serializable {
     public Registration() {
     }
 
+    public Registration(Integer id, String number) {
+        this.id = id;
+        this.number = number;
+    }
+
     public Registration(Integer id, String name, String email, String password, String registrationNumber) {
         this.id = id;
         this.name = name;

@@ -17,4 +17,8 @@ public interface RegistrationService {
     Registration updateRegistration(Registration registration);
 
     void deleteRegistration(Registration registration);
+
+    void validateRegistrationExistsByEmail(String email);
+
+    Registration validateRegistrationExists(Registration registration);
 }

@@ -79,6 +79,7 @@ public class RegistrationServiceImpl implements RegistrationService {
     public void validateRegistrationExistsByEmail(String email){
         if(registrationRepository.existsByEmail(email))
             throw new IllegalArgumentException("Object already exists");
+
     }
 
 

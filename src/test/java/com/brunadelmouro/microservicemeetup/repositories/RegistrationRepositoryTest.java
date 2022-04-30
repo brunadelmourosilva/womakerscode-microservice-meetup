@@ -27,7 +27,7 @@ public class RegistrationRepositoryTest {
     RegistrationRepository registrationRepository;
 
     @Test
-    @DisplayName("Should return true when exists a registration already created")
+    @DisplayName("Should return true when exists a Registration already created")
     public void returnTrueWhenRegistrationByNumberExistsTest(){
 
         //cenário
@@ -48,7 +48,7 @@ public class RegistrationRepositoryTest {
     }
 
     @Test
-    @DisplayName("Should return false when doesn't exists a number with a registration already created")
+    @DisplayName("Should return false when doesn't exists a number with a Registration already created")
     public void returnFalseWhenRegistrationNumberDoesntExistsTest() {
 
         //cenário
@@ -67,7 +67,7 @@ public class RegistrationRepositoryTest {
     }
 
     @Test
-    @DisplayName("Should return a registration by id with success")
+    @DisplayName("Should return a Registration by id with success")
     public void findRegistrationByIdTest() {
 
         //cenário
@@ -98,7 +98,7 @@ public class RegistrationRepositoryTest {
     }
 
     @Test
-    @DisplayName("Should delete a registration with success")
+    @DisplayName("Should delete a Registration with success")
     public void deleteRegistration() {
 
         //cenário

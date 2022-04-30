@@ -36,7 +36,7 @@ public class RegistrationServiceTest {
 
     //consertar
     @Test
-    @DisplayName("")
+    @DisplayName("Should return true when create a Registration with unique e-mail")
     public void testUniqueEmailWhenCreatingNewRegistration(){
 
         //cenário

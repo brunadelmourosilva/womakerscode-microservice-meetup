@@ -7,6 +7,8 @@ import com.brunadelmouro.microservicemeetup.models.dto.registration.Registration
 import com.brunadelmouro.microservicemeetup.services.impl.EmailServiceImpl;
 import com.brunadelmouro.microservicemeetup.services.impl.RegistrationServiceImpl;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -23,6 +25,8 @@ import java.util.stream.Collectors;
 @RequestMapping(value = "/api/registrations")
 public class RegistrationController {
 
+    Logger logger = LoggerFactory.getLogger(RegistrationController.class);
+
     @Autowired
     private RegistrationServiceImpl registrationService;
 
@@ -31,6 +35,8 @@ public class RegistrationController {
     private ResponseEntity<RegistrationResponseDTO> saveRegistration(@Valid @RequestBody RegistrationRequestDTO registrationDto) {
         Registration entityRegistration = registrationService.convertDtoToEntity(registrationDto);
         registrationService.saveRegistration(entityRegistration);
+
+        logger.info("Registration saved");
 
         return ResponseEntity.ok().body(registrationService.convertEntityToResponseDTO(entityRegistration));
     }
@@ -73,6 +79,8 @@ public class RegistrationController {
         newRegistration.setId(oldRegistration.getId());
         registrationService.updateRegistration(newRegistration);
 
+        logger.info("Registration updated");
+
         return ResponseEntity.ok().body(newRegistration);
     }
 
@@ -82,6 +90,8 @@ public class RegistrationController {
         Registration registration = registrationService.findRegistrationById(id);
 
         registrationService.deleteRegistration(registration);
+
+        logger.info("Registration deleted");
     }
 }
 

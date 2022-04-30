@@ -43,7 +43,6 @@ _Em andamento_
 - [x] Tratamento de validação em Meetup
 - [x] Envio de e-mail ao registrar o cadastro
 - [x] Envio de e-mail ao registrar em um meetup
-- [ ] Thymeleaf para e-mails
 - [ ] Número de registro como _auto generated_[opcional]
 - [ ] Adicionar Spring Security com token JWT
 - [x] Swagger - http://localhost:8080/swagger-ui/#/

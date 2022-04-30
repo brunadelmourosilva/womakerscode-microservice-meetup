@@ -14,6 +14,8 @@ import com.brunadelmouro.microservicemeetup.services.impl.MeetupServiceImpl;
 import com.brunadelmouro.microservicemeetup.services.impl.RegistrationServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +27,8 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping(value = "/api/meetups")
 public class MeetupController {
+
+    Logger logger = LoggerFactory.getLogger(MeetupController.class);
 
     @Autowired
     private MeetupServiceImpl meetupService;
@@ -41,6 +45,8 @@ public class MeetupController {
     private ResponseEntity<MeetupResponseDTO> saveMeetup(@Valid @RequestBody MeetupRequestDTO meetupRequestDTO){
         Meetup meetup = meetupService.convertEntityToDto(meetupRequestDTO);
         meetupService.saveMeetup(meetup);
+
+        logger.info("Meetup saved");
 
         return ResponseEntity.ok().body(meetupService.convertEntityToResponseDTO(meetup));
     }
@@ -65,8 +71,10 @@ public class MeetupController {
         registrationService.updateRegistration(registration);
         meetupService.updateMeetup(meetup);
 
+        logger.info("Meetup updated with new registration");
+
         //email
-        //emailService.sendEmail(meetup, registration);
+        emailService.sendEmail(meetup, registration);
 
         //DTO
         RegistrationMeetupUpdateResponseDTO registrationDTO = registrationService.
@@ -130,6 +138,8 @@ public class MeetupController {
         newMeetup.setId(oldMeetup.getId());
         meetupService.updateMeetup(newMeetup);
 
+        logger.info("Meetup information updated");
+
         return ResponseEntity.ok().body(meetupService.convertEntityToResponseDTO(newMeetup));
     }
 
@@ -139,6 +149,8 @@ public class MeetupController {
         Meetup meetup = meetupService.findMeetupById(id);
 
         meetupService.deleteMeetup(meetup);
+
+        logger.info("Meetup deleted");
     }
 
 }

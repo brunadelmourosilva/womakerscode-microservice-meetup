@@ -8,6 +8,8 @@ import com.brunadelmouro.microservicemeetup.models.dto.meetup.MeetupResponseDTO;
 import com.brunadelmouro.microservicemeetup.repositories.MeetupRepository;
 import com.brunadelmouro.microservicemeetup.repositories.RegistrationRepository;
 import com.brunadelmouro.microservicemeetup.services.MeetupService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +20,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class MeetupServiceImpl implements MeetupService {
-
     @Autowired
     private MeetupRepository meetupRepository;
 

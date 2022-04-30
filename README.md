@@ -37,7 +37,7 @@ _Em andamento_
 - [x] Implementação do repository
 - [x] Implementação de DTO's
 - [x] Adicionar MySQL ao projeto
-- [ ] Adicionar LOGs à aplicação
+- [x] Adicionar LOGs à aplicação
 - [x] Tratamento de exceptions
 - [x] Tratamento de validação em Registration
 - [x] Tratamento de validação em Meetup

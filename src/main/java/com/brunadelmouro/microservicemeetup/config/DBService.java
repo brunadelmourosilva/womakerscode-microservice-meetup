@@ -7,6 +7,7 @@ import com.brunadelmouro.microservicemeetup.repositories.RegistrationRepository;
 import com.brunadelmouro.microservicemeetup.services.impl.MeetupServiceImpl;
 import com.brunadelmouro.microservicemeetup.services.impl.RegistrationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -18,6 +19,9 @@ public class DBService {
     RegistrationServiceImpl registrationService;
 
     @Autowired
+	BCryptPasswordEncoder encoder;
+
+    @Autowired
     MeetupServiceImpl meetupService;
 
     public void instantiateTestDatabase() throws ParseException {
@@ -27,7 +31,7 @@ public class DBService {
 						null,
 						"Bruna Delmouro",
 						"brunadelmouro@gmail.com",
-						"123",
+						encoder.encode("123"),
 						"001")
 		);
 

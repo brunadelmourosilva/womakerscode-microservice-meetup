@@ -14,6 +14,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,6 +26,9 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     @Autowired
     RegistrationRepository registrationRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder encoder;
 
     @Autowired
     private EmailServiceImpl emailService;
@@ -112,7 +116,7 @@ public class RegistrationServiceImpl implements RegistrationService {
                 null,
                 registrationRequestDTO.getName(),
                 registrationRequestDTO.getEmail(),
-                registrationRequestDTO.getPassword(),
+                encoder.encode(registrationRequestDTO.getPassword()),
                 registrationRequestDTO.getNumber()
         );
     }

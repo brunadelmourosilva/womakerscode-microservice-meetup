@@ -1,5 +1,6 @@
 package com.brunadelmouro.microservicemeetup.models;
 
+import com.brunadelmouro.microservicemeetup.models.enums.Profile;
 import com.brunadelmouro.microservicemeetup.utils.DateUtils;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.Length;
@@ -8,7 +9,10 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 public class Registration implements Serializable {
@@ -33,6 +37,10 @@ public class Registration implements Serializable {
     @Column
     private String number; //substituir pelo id da tabela original
 
+    @ElementCollection(fetch=FetchType.EAGER)
+    @CollectionTable(name="PROFILES")
+    private Set<Integer> profiles = new HashSet<>();
+
     @JsonIgnore
     @Column
     @ManyToMany
@@ -42,6 +50,7 @@ public class Registration implements Serializable {
     private List<Meetup> meetups;
 
     public Registration() {
+        addProfiles(Profile.REGISTRATION);
     }
 
     public Registration(String name, String email, String password, String number) {
@@ -50,11 +59,13 @@ public class Registration implements Serializable {
         this.password = password;
         this.dateOfRegistration = DateUtils.convertSystemTimeMillisToString(System.currentTimeMillis());
         this.number = number;
+        addProfiles(Profile.REGISTRATION);
     }
 
     public Registration(Integer id, String number) {
         this.id = id;
         this.number = number;
+        addProfiles(Profile.REGISTRATION);
     }
 
     public Registration(Integer id, String name, String email, String password, String registrationNumber) {
@@ -64,6 +75,7 @@ public class Registration implements Serializable {
         this.password = password;
         this.dateOfRegistration = DateUtils.convertSystemTimeMillisToString(System.currentTimeMillis());
         this.number = registrationNumber;
+        addProfiles(Profile.REGISTRATION);
     }
 
     public List<Meetup> getMeetups() {
@@ -120,5 +132,13 @@ public class Registration implements Serializable {
 
     public void setNumber(String number) {
         this.number = number;
+    }
+
+    public Set<Profile> getProfile() {
+        return profiles.stream().map(x -> Profile.toEnum(x)).collect(Collectors.toSet());
+    }
+
+    public void addProfiles(Profile profile) {
+        profiles.add(profile.getCod());
     }
 }

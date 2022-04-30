@@ -2,6 +2,7 @@ package com.brunadelmouro.microservicemeetup.config;
 
 import com.brunadelmouro.microservicemeetup.models.Meetup;
 import com.brunadelmouro.microservicemeetup.models.Registration;
+import com.brunadelmouro.microservicemeetup.models.enums.Profile;
 import com.brunadelmouro.microservicemeetup.repositories.MeetupRepository;
 import com.brunadelmouro.microservicemeetup.repositories.RegistrationRepository;
 import com.brunadelmouro.microservicemeetup.services.impl.MeetupServiceImpl;
@@ -11,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
+import java.util.Arrays;
 
 @Service
 public class DBService {
@@ -22,18 +24,29 @@ public class DBService {
 	BCryptPasswordEncoder encoder;
 
     @Autowired
-    MeetupServiceImpl meetupService;
+    RegistrationRepository registrationRepository;
+
+    @Autowired
+	MeetupServiceImpl meetupService;
 
     public void instantiateTestDatabase() throws ParseException {
 
-        registrationService.saveRegistration(
-				new Registration(
-						null,
-						"Bruna Delmouro",
-						"brunadelmouro@gmail.com",
-						encoder.encode("123"),
-						"001")
-		);
+    	Registration registration1 = new Registration(
+				null,
+				"Bruna Delmouro",
+				"brunadelmouro@gmail.com",
+				encoder.encode("123"),
+				"001");
+
+    	Registration registration2 = new Registration(
+				null,
+				"Bruna ADMIN",
+				"d2021001809@unifei.edu.br",
+				encoder.encode("123"),
+				"002");
+    	registration2.addProfiles(Profile.ADMIN);
+
+		registrationRepository.saveAll(Arrays.asList(registration1, registration2));
 
 		meetupService.saveMeetup(
 				new Meetup(

@@ -54,7 +54,9 @@ public class MeetupController {
 
         Registration registration = registrationService.findRegistrationByRegistrationNumber(number);
 
-
+        //antes de associar esta pessoa ao meetup,
+        //iremos verificar se a mesma já existe na lista
+        meetupService.validateRegistrationDoesntExistOnMeetup(meetupId, number);
 
         //associação
         registration.getMeetups().add(meetup);

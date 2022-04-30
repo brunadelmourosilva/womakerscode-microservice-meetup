@@ -2,9 +2,11 @@ package com.brunadelmouro.microservicemeetup.services.impl;
 
 import com.brunadelmouro.microservicemeetup.exceptions.ObjectNotFoundException;
 import com.brunadelmouro.microservicemeetup.models.Meetup;
+import com.brunadelmouro.microservicemeetup.models.Registration;
 import com.brunadelmouro.microservicemeetup.models.dto.meetup.MeetupRequestDTO;
 import com.brunadelmouro.microservicemeetup.models.dto.meetup.MeetupResponseDTO;
 import com.brunadelmouro.microservicemeetup.repositories.MeetupRepository;
+import com.brunadelmouro.microservicemeetup.repositories.RegistrationRepository;
 import com.brunadelmouro.microservicemeetup.services.MeetupService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class MeetupServiceImpl implements MeetupService {
@@ -61,6 +64,17 @@ public class MeetupServiceImpl implements MeetupService {
         return new MeetupResponseDTO(meetup.getId(), meetup.getEvent(), meetup.getMeetupDate());
     }
 
+    public void validateRegistrationDoesntExistOnMeetup(Integer meetupId, String number){
+        List<Registration> registrationList = meetupRepository.findById(meetupId).get().getRegistrationsList();
+
+        registrationList.forEach(
+                x -> {
+                    String numberOnList = x.getNumber();
+                    if(number.equals(numberOnList))
+                        throw new IllegalArgumentException("Registration already exists on Meetup");
+                }
+        );
+    }
 
     public void validateEventDoesntExist(String event){
         meetupRepository.findAll().forEach(
@@ -68,7 +82,6 @@ public class MeetupServiceImpl implements MeetupService {
                     String comparsion = x.getEvent().toUpperCase();
                     if(event.toUpperCase().equals(comparsion))
                         throw new IllegalArgumentException("Event already exists");
-
                 });
     }
 

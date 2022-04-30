@@ -24,8 +24,11 @@ import java.util.stream.Collectors;
 @Service
 public class RegistrationServiceImpl implements RegistrationService {
 
-    @Autowired
     RegistrationRepository registrationRepository;
+
+    public RegistrationServiceImpl(RegistrationRepository registrationRepository) {
+        this.registrationRepository = registrationRepository;
+    }
 
     @Autowired
     private BCryptPasswordEncoder encoder;

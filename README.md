@@ -26,7 +26,7 @@ _Em andamento_
 
 ![rest-api-meetups drawio (2)](https://user-images.githubusercontent.com/61791877/165973200-c740f945-283b-434c-9bfa-0d8ccc636caf.png)
 
-##### * _clique na imagem para uma melhor visualização_
+* _clique na imagem para uma melhor visualização_
 ---
 ### Checklist ✔️
 

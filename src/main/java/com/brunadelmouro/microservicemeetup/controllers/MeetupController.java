@@ -50,8 +50,11 @@ public class MeetupController {
     private ResponseEntity<MeetupResponseUpdateDTO> updateMeetup(@PathVariable Integer meetupId, @RequestBody String number){
         Meetup meetup = meetupService.findMeetupById(meetupId);
 
-        number = number.substring(16, number.length()-4);
+        //number = number.substring(17, number.length()-4); //postman
+
         Registration registration = registrationService.findRegistrationByRegistrationNumber(number);
+
+
 
         //associação
         registration.getMeetups().add(meetup);
@@ -61,7 +64,7 @@ public class MeetupController {
         meetupService.updateMeetup(meetup);
 
         //email
-        emailService.sendEmail(meetup, registration);
+        //emailService.sendEmail(meetup, registration);
 
         //DTO
         RegistrationMeetupUpdateResponseDTO registrationDTO = registrationService.

@@ -2,12 +2,15 @@ package com.brunadelmouro.microservicemeetup.controllers;
 
 import com.brunadelmouro.microservicemeetup.models.Registration;
 import com.brunadelmouro.microservicemeetup.models.dto.registration.RegistrationResponseDTO;
+import com.brunadelmouro.microservicemeetup.repositories.RegistrationRepository;
 import com.brunadelmouro.microservicemeetup.services.RegistrationService;
 import com.brunadelmouro.microservicemeetup.services.impl.RegistrationServiceImpl;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -19,9 +22,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.time.LocalDate;
-import java.util.Optional;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -39,39 +41,42 @@ public class RegistrationControllerTest {
     @MockBean
     RegistrationServiceImpl registrationService;
 
+    @Autowired
+    RegistrationRepository registrationRepository;
+
+    @Autowired
+    ObjectMapper objectMapper;
+
     @Test
     @DisplayName("Should get registration information")
-    public void getRegistrationTest() throws Exception {
+    public void saveRegistrationTest() throws Exception {
 
         Integer id = 1;
         //cenário
-        Registration registration = new Registration(
-                id,
-                createValidRegistration().getName(),
-                createValidRegistration().getEmail(),
-                createValidRegistration().getDateOfRegistration(),
-                createValidRegistration().getRegistrationNumber());
+        Registration saveRegistration =
+                new Registration(
+                        createValidRegistration().getName(),
+                        createValidRegistration().getEmail(),
+                        createValidRegistration().getPassword(),
+                        createValidRegistration().getNumber()
+                );
+
+        Registration savedRegistration = createValidRegistration();
 
         //execução
-        BDDMockito.given(registrationService.findRegistrationById(id)).willReturn(registration);
+        Mockito.when(registrationRepository.save(saveRegistration)).thenReturn(savedRegistration);
 
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
-                .get(REGISTRATION_API.concat("/" + id))
-                .accept(MediaType.APPLICATION_JSON);
 
         //assert
-        mockMvc.perform(requestBuilder)
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("id").value(id))
-                .andExpect(jsonPath("name").value(createValidRegistration().getName()))
-                .andExpect(jsonPath("email").value(createValidRegistration().getEmail()))
-                .andExpect(jsonPath("dateOfRegistration").value(createValidRegistration().getDateOfRegistration()))
-                .andExpect(jsonPath("number").value(createValidRegistration().getRegistrationNumber()));
-
+        mockMvc.perform(post(REGISTRATION_API)
+                        .contentType("application/json")
+                        .content(objectMapper.writeValueAsString(saveRegistration))
+                )
+                .andExpect(status().isOk());
     }
 
-    public RegistrationResponseDTO createValidRegistration() {
-        return new RegistrationResponseDTO(1, "Vitória", LocalDate.now().toString(), "vitoria@gmail.com", "001");
+    public Registration createValidRegistration() {
+        return new Registration(1, "Vitória", "vitoria@gmail.com", "123", "001");
     }
 
 }

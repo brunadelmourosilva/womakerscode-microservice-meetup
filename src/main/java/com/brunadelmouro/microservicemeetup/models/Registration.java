@@ -44,6 +44,14 @@ public class Registration implements Serializable {
     public Registration() {
     }
 
+    public Registration(String name, String email, String password, String number) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.dateOfRegistration = DateUtils.convertSystemTimeMillisToString(System.currentTimeMillis());
+        this.number = number;
+    }
+
     public Registration(Integer id, String number) {
         this.id = id;
         this.number = number;

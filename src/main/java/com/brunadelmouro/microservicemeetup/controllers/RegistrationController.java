@@ -14,8 +14,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.modelmapper.ModelMapper;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -71,6 +71,7 @@ public class RegistrationController {
     }
 
     @ApiOperation(value = "Atualizar informações de um Registration")
+    @PreAuthorize("isAuthenticated()")
     @PutMapping(value = "/{id}")
     private ResponseEntity<Registration> updateRegistration(@PathVariable Integer id, @Valid @RequestBody RegistrationRequestDTO registrationDto) {
         Registration newRegistration = registrationService.convertDtoToEntity(registrationDto);
@@ -85,6 +86,7 @@ public class RegistrationController {
     }
 
     @ApiOperation(value = "Deletar Registration")
+    @PreAuthorize("isAuthenticated()")
     @DeleteMapping("/{id}")
     public void deleteRegistrationById(@PathVariable Integer id) {
         Registration registration = registrationService.findRegistrationById(id);

@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -41,6 +42,7 @@ public class MeetupController {
 
 
     @ApiOperation(value = "Salvar Meetup")
+    @PreAuthorize("isAuthenticated()")
     @PostMapping(value = "/registerMeetup")
     private ResponseEntity<MeetupResponseDTO> saveMeetup(@Valid @RequestBody MeetupRequestDTO meetupRequestDTO){
         Meetup meetup = meetupService.convertEntityToDto(meetupRequestDTO);
@@ -52,6 +54,7 @@ public class MeetupController {
     }
 
     @ApiOperation(value = "Registrar usuário em um determinado Meetup")
+    @PreAuthorize("isAuthenticated()")
     @PutMapping(value = "/registerRegistration/{meetupId}")
     private ResponseEntity<MeetupResponseUpdateDTO> updateMeetup(@PathVariable Integer meetupId, @RequestBody String number){
         Meetup meetup = meetupService.findMeetupById(meetupId);
@@ -130,6 +133,7 @@ public class MeetupController {
     }
 
     @ApiOperation(value = "Atualizar informações de um Meetup")
+    @PreAuthorize("isAuthenticated()")
     @PutMapping("/{id}")
     public ResponseEntity<MeetupResponseDTO> updateMeetupById(@PathVariable Integer id, @Valid @RequestBody MeetupRequestDTO meetupRequestDTO) {
         Meetup newMeetup = meetupService.convertEntityToDto(meetupRequestDTO);
@@ -144,6 +148,7 @@ public class MeetupController {
     }
 
     @ApiOperation(value = "Deletar Meetup")
+    @PreAuthorize("isAuthenticated()")
     @DeleteMapping("/{id}")
     public void deleteMeetupById(@PathVariable Integer id) {
         Meetup meetup = meetupService.findMeetupById(id);

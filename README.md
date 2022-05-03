@@ -13,12 +13,15 @@ _Em andamento_
 ### Tecnologias 🖥️
 
 * Java 11
+* Spring Boot 2.6.6
+* Spring Data JPA
+* Spring Security
 * Gradle
-* Spring
-* JPA
 * MySQL
-* TDD Test Driven Development
+* H2 Database
+* TDD - Test Driven Development
 * Azure functions
+* Swagger
 
 ---
 

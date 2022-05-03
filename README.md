@@ -48,7 +48,7 @@ _Em andamento_
 - [x] Envio de e-mail ao registrar em um meetup
 - [ ] Número de registro como _auto generated_ [opcional]
 - [x] Adicionar Spring Security com token JWT
-- [x] Swagger - http://localhost:8080/swagger-ui/#/
+- [x] Swagger - https://microservice-meetup.azurewebsites.net/swagger-ui/#/
 - [x] Desenhar diagrama do sistema
 - [x] Testes locais via postman
 - [x] Deploy no Azure

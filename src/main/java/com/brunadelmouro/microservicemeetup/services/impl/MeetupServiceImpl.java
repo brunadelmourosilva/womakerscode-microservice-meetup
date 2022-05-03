@@ -20,8 +20,13 @@ import java.util.stream.Collectors;
 
 @Service
 public class MeetupServiceImpl implements MeetupService {
-    @Autowired
+
+
     private MeetupRepository meetupRepository;
+
+    public MeetupServiceImpl(MeetupRepository meetupRepository) {
+        this.meetupRepository = meetupRepository;
+    }
 
     @Override
     public Meetup saveMeetup(Meetup meetup) {

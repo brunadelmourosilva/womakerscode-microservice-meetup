@@ -17,8 +17,6 @@ public interface MeetupService {
 
     List<Meetup> findMeetups();
 
-    //Page<Meetup> findRegistrationsByMeetup(Registration registration, Pageable pageable);
-
     Meetup updateMeetup(Meetup meetup);
 
     void deleteMeetup(Meetup meetup);

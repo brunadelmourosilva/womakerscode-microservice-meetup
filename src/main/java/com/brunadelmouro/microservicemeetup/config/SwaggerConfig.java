@@ -47,15 +47,15 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("Meetups API")
-                .description("RestApi de meetup produzida no bootcamp de Java da Womakerscode")
+                .title("API REST - Meetups")
+                .description("API desenvolvida no bootcamp back-end Java da WoMakersCode, cujo objetivo é registrar eventos e seus respectivos participantes.")
                 .version("1.0")
                 .contact(contact())
                 .build();
     }
 
     private Contact contact() {
-        return new Contact("Aluna da Womakerscode - Bruna Delmouro",
+        return new Contact("Bruna Delmouro",
                 "https://github.com/brunadelmourosilva",
                 "brunadelmouro@gmail.com");
 

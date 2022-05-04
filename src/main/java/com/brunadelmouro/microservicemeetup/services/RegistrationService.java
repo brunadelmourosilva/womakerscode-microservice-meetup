@@ -1,8 +1,14 @@
 package com.brunadelmouro.microservicemeetup.services;
 
 import com.brunadelmouro.microservicemeetup.models.Registration;
+import com.brunadelmouro.microservicemeetup.models.dto.registration.RegistrationMeetupListResponseDTO;
+import com.brunadelmouro.microservicemeetup.models.dto.registration.RegistrationMeetupUpdateResponseDTO;
+import com.brunadelmouro.microservicemeetup.models.dto.registration.RegistrationRequestDTO;
+import com.brunadelmouro.microservicemeetup.models.dto.registration.RegistrationResponseDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 public interface RegistrationService {
 
@@ -21,4 +27,13 @@ public interface RegistrationService {
     void validateRegistrationExistsByEmail(String email);
 
     Registration validateRegistrationExists(Registration registration);
+
+    RegistrationResponseDTO convertEntityToResponseDTO(Registration registration);
+
+    List<RegistrationMeetupListResponseDTO> convertEntityToRegistrationMeetupListResponseDTO(List<Registration> registrationList);
+
+    RegistrationMeetupUpdateResponseDTO convertEntityToRegistrationMeetupUpdateResponseDTO(Registration registration);
+
+    Registration convertDtoToEntity(RegistrationRequestDTO registrationRequestDTO);
+
 }

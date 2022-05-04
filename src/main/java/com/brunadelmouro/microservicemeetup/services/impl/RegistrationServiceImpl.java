@@ -39,20 +39,24 @@ public class RegistrationServiceImpl implements RegistrationService {
     @Override
     public Registration saveRegistration(Registration registration) {
         validateRegistrationExistsByEmail(registration.getEmail());
-        //emailService.sendEmail(registration);
+
+        emailService.sendEmail(registration);
         return registrationRepository.save(registration);
     }
 
     @Override
     public Registration findRegistrationById(Integer id) {
         Optional<Registration> obj = registrationRepository.findById(id);
-        return obj.orElseThrow(() -> new ObjectNotFoundException("Registration not found"));
+
+        return obj.orElseThrow(() -> new ObjectNotFoundException("Registration not found."));
     }
 
     @Override
     public Registration findRegistrationByRegistrationNumber(String registrationNumber) {
         Registration registration = registrationRepository.findByNumber(registrationNumber);
+
         validateRegistrationExists(registration);
+
         return registration;
     }
 
@@ -71,8 +75,11 @@ public class RegistrationServiceImpl implements RegistrationService {
     @Override
     public Registration updateRegistration(Registration bodyRegistration) {
         validateRegistrationExists(bodyRegistration);
+
         Registration newRegistration = findRegistrationById(bodyRegistration.getId());
+
         BeanUtils.copyProperties(bodyRegistration, newRegistration, "id");
+
         return registrationRepository.save(newRegistration);
     }
 
@@ -80,19 +87,20 @@ public class RegistrationServiceImpl implements RegistrationService {
     @Override
     public void deleteRegistration(Registration registration) {
         validateRegistrationExists(registration);
+
         this.registrationRepository.delete(registration);
     }
 
     public void validateRegistrationExistsByEmail(String email){
         if(registrationRepository.existsByEmail(email)) {
-            throw new IllegalArgumentException("Object already exists");
+            throw new IllegalArgumentException("Registration already exists.");
         }
     }
 
 
     public Registration validateRegistrationExists(Registration registration){
         if (registration == null || registration.getId() == null) {
-            throw new IllegalArgumentException("Registration id cannot be null");
+            throw new IllegalArgumentException("Registration id cannot be null.");
         }
         return registration;
     }

@@ -18,9 +18,6 @@ import java.util.Arrays;
 public class DBService {
 
     @Autowired
-    RegistrationServiceImpl registrationService;
-
-    @Autowired
 	BCryptPasswordEncoder encoder;
 
     @Autowired
@@ -40,7 +37,7 @@ public class DBService {
 
     	Registration registration2 = new Registration(
 				null,
-				"Bruna ADMIN",
+				"Bruna S. D.",
 				"d2021001809@unifei.edu.br",
 				encoder.encode("123"),
 				"002");
@@ -52,7 +49,14 @@ public class DBService {
 				new Meetup(
 						null,
 						"Palestra sobre microsserviços",
-						"29/04/2022"
+						"10/05/2022"
 		));
+
+		meetupService.saveMeetup(
+				new Meetup(
+						null,
+						"Palestra sobre programação reativa com Spring WebFlux",
+						"08/05/2022"
+				));
     }
 }

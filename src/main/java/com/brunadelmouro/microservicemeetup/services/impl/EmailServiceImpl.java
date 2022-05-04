@@ -62,13 +62,15 @@ public class EmailServiceImpl implements EmailService {
 
         sm.setTo(registration.getEmail());
 
-        sm.setSubject("You were registered on meetup: " + meetup.getEvent());
+        sm.setSubject("Event confirmation");
 
         sm.setText("Hello " + registration.getName() + "! \n\n" +
+                   "Here is your confirmation for the following event: " + meetup.getEvent() + "\n\n" +
                    "*** Details *** \n\n" +
                    "Event: " + meetup.getEvent() + "\n" +
                    "Meetup date: " + meetup.getMeetupDate() + "\n" +
-                   "Registration number: " + registration.getNumber() + "\n");
+                   "Registration number: " + registration.getNumber() +
+                   "\n\nBest regards!" + "\n");
 
         return sm;
     }

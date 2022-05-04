@@ -12,7 +12,7 @@ public interface RegistrationRepository extends JpaRepository<Registration, Inte
 
     boolean existsByEmail(String email);
 
-    public Optional<Registration> findByEmail(String email);
+    Optional<Registration> findByEmail(String email);
 
     Registration findByNumber(String number);
 

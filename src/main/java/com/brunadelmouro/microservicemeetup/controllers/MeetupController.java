@@ -76,7 +76,6 @@ public class MeetupController {
 
         logger.info("Meetup updated with new registration");
 
-        //email
         emailService.sendEmail(meetup, registration);
 
         //DTO

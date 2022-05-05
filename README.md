@@ -6,8 +6,8 @@ API desenvolvida no bootcamp back-end Java da WoMakersCode, cujo objetivo é reg
 
 ---
 
-### Status 📈
-_Em andamento_ 
+### Status
+>Concluído ✔️
 
 ---
 
@@ -88,7 +88,30 @@ _Em andamento_
 
 ### Features 💡
 
-terminar
+
+* **Exceções personalizadas**: O código foi programado para lançar exceções descritivas, que auxiliam o programador a encontrar a origem do problema. Alguns exemplos do uso de exceções personalizadas são:
+    
+  ![img_2.png](img_2.png)
+  ![img_3.png](img_3.png)
+
+
+- **Lista de exceções referentes à validação**:
+![img_4.png](img_4.png)
+
+
+
+- **Relação many-to-many**: Já que um registration pode se cadastrar em vários meetups e, vários meetups podem ter muitos registrations, a relação many-to-many torna-se necessária, gerando, dessa forma, uma terceira tabela.
+
+
+- **Envio de e-mails**: Há envio de e-mails com o Spring Mail no momento em que um usuário cria um cadastro e também quando o mesmo se registra em um meetup.
+
+
+- **Implementação do Spring Security com token JWT**: para maior segurança, foi implementado o Spring Security e dessa forma, o usuário deverá estar autenticado para acessar os endpoints.
+
+---
+###Melhorias
+
+* Usar o _registration number_ como id da tabela de Registration.
 
 ---
 ### Checklist ✔️

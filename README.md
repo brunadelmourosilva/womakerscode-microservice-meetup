@@ -28,7 +28,7 @@ _Em andamento_
 
 ---
 
-### Como utilizar a aplicação:
+### Como utilizar a aplicação 🤔
 
 * 1 - A aplicação encontra-se hospedada na Azure, disponível na seguinte URL: https://microservice-meetup.azurewebsites.net/swagger-ui/#/
 
@@ -83,6 +83,12 @@ _Em andamento_
 
 
 <h4><i> clique na imagem para uma melhor visualização </i></h4>
+
+---
+
+### Features 💡
+
+terminar
 
 ---
 ### Checklist ✔️

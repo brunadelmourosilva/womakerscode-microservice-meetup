@@ -79,9 +79,11 @@ _Em andamento_
 
 ### Diagrama do sistema :bar_chart:
 
-![rest-api-meetups drawio (2)](https://user-images.githubusercontent.com/61791877/165973200-c740f945-283b-434c-9bfa-0d8ccc636caf.png)
+![rest-api-meetups drawio (1)](https://user-images.githubusercontent.com/61791877/166856485-efaa856f-8874-4145-85ac-052f67057763.png)
 
-_clique na imagem para uma melhor visualização_
+
+<h4><i> clique na imagem para uma melhor visualização </i></h4>
+
 ---
 ### Checklist ✔️
 

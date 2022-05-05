@@ -39,6 +39,7 @@ public class RegistrationServiceImpl implements RegistrationService {
     @Override
     public Registration saveRegistration(Registration registration) {
         validateRegistrationExistsByEmail(registration.getEmail());
+        validateRegistrationNumberExistsByRegistration(registration.getNumber());
 
         emailService.sendEmail(registration);
         return registrationRepository.save(registration);
@@ -89,6 +90,12 @@ public class RegistrationServiceImpl implements RegistrationService {
         validateRegistrationExists(registration);
 
         this.registrationRepository.delete(registration);
+    }
+
+    public void validateRegistrationNumberExistsByRegistration(String number){
+       if(registrationRepository.existsByNumber(number)){
+           throw new IllegalArgumentException("Registration(number) already exists.");
+       }
     }
 
     public void validateRegistrationExistsByEmail(String email){

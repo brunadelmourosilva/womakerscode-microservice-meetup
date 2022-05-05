@@ -49,7 +49,7 @@ public class EmailServiceImpl implements EmailService {
         sm.setSubject("Your registration was created with success!");
 
         sm.setText("Hello, " + registration.getName() + "! " +
-                   "\n\nYour account has been successfully created on WoMakersCode's meetup platform!" +
+                   "\n\nYour account has been successfully created on WoMakersCode's meetup platform." +
                    "\n\nBest regards!");
 
         return sm;

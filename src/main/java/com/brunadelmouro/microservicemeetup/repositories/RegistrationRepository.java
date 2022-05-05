@@ -16,4 +16,6 @@ public interface RegistrationRepository extends JpaRepository<Registration, Inte
 
     Registration findByNumber(String number);
 
+    boolean existsByNumber(String number);
+
 }

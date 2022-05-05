@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 public class ExceptionController {
 
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(ObjectNotFoundException.class)
     public ResponseEntity<StandardError> objectNotFound(ObjectNotFoundException e){
         return ResponseEntity.ok(
@@ -25,6 +26,7 @@ public class ExceptionController {
                         HttpStatus.NOT_FOUND.value()));
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<StandardError> illegalArgument(IllegalArgumentException e){
         return ResponseEntity.ok(

@@ -113,7 +113,7 @@ API desenvolvida no bootcamp back-end Java da WoMakersCode, cujo objetivo é reg
 - **Representação do sistema por meio de um diagrama**: Para um maior entendimento a respeito do sistema como um todo, foi realizado um diagrama representando todo o fluxo das ações. O mesmo encontra-se logo acima, em _Diagrama do sistema_. 
 
 ---
-###Melhorias
+### Melhorias
 
 * Usar o _registration number_ como id da tabela de Registration.
 

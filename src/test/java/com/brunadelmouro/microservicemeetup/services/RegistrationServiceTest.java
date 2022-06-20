@@ -1,20 +1,26 @@
 package com.brunadelmouro.microservicemeetup.services;
 
+import com.brunadelmouro.microservicemeetup.exceptions.ObjectNotFoundException;
 import com.brunadelmouro.microservicemeetup.models.Registration;
 import com.brunadelmouro.microservicemeetup.repositories.RegistrationRepository;
+import com.brunadelmouro.microservicemeetup.services.impl.EmailServiceImpl;
 import com.brunadelmouro.microservicemeetup.services.impl.RegistrationServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.ContextConfiguration;
 
 
 import java.util.Arrays;
@@ -22,52 +28,85 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import static org.mockito.BDDMockito.*;
 
-@ExtendWith(SpringExtension.class)
+
+@ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
 public class RegistrationServiceTest {
 
-    RegistrationService registrationService;
+    @InjectMocks
+    RegistrationServiceImpl registrationService;
 
-    @MockBean
+    @Mock
     RegistrationRepository registrationRepository;
 
-    //setup padrão para os testes
+    @Mock
+    EmailServiceImpl emailService;
+
+    Registration registration;
+
     @BeforeEach
     public void setUp(){
-        this.registrationService = new RegistrationServiceImpl(registrationRepository);
+        registration = new Registration(1, "Bruna", "brunadelmouro@gmail.com", "123", "001");
     }
 
     @Test
     @DisplayName("Should save a Registration")
-    public void saveRegistrationTest(){
+    public void saveRegistrationWithSuccessTest(){
 
-        //cenário
-        Registration registration = createValidRegistration();
+        //given
+        given(registrationRepository.existsByEmail(registration.getEmail())).willReturn(false);
+        given(registrationRepository.existsByNumber(registration.getNumber())).willReturn(false);
+        //emailService.sendEmail(registration);
+        given(registrationRepository.save(registration)).willReturn(registration);
 
-        //execução
-        Mockito.when(registrationRepository.existsByEmail(Mockito.anyString())).thenReturn(false);
+        //when
+        Registration response = registrationService.saveRegistration(registration);
 
-        //assert
-        assertThat(registration.getId()).isEqualTo(101);
-        assertThat(registration.getName()).isEqualTo("Bruna");
-        assertThat(registration.getEmail()).isEqualTo("bruna@inovags.com");
-        assertThat(registration.getPassword()).isEqualTo("123");
-        assertThat(registration.getNumber()).isEqualTo("001");
+        //then
+        then(registrationRepository).should().existsByEmail(registration.getEmail());
+        then(registrationRepository).should().existsByNumber(registration.getNumber());
+        then(registrationRepository).should().save(registration);
+
+        assertEquals("Bruna", response.getName());
+        assertEquals("brunadelmouro@gmail.com", response.getEmail());
     }
+
+    //TODO create a test to not save a registration
 
     @Test
     @DisplayName("Should return a Registration by id")
-    public void findRegistrationByIdTest(){
-        Registration registration = createValidRegistration();
+    public void findRegistrationByIdWithSuccessTest(){
+        //given
+        given(registrationRepository.findById(registration.getId())).willReturn(Optional.of(registration));
 
-        Mockito.when(registrationRepository.findById(1)).thenReturn(Optional.of(registration));
+        //when
+        Registration response = registrationService.findRegistrationById(registration.getId());
 
-        assertThat(registrationService.findRegistrationById(1)).isEqualTo(registration);
+        //then
+        then(registrationRepository).should().findById(registration.getId());
+
+        assertEquals("brunadelmouro@gmail.com", response.getEmail());
+    }
+
+    @Test
+    public void findRegistrationByIdWhenIdWasNotFound(){
+        //given
+        given(registrationRepository.findById(anyInt())).willThrow(new ObjectNotFoundException("Registration not found."));
+
+        //when
+        assertThrows(ObjectNotFoundException.class, () -> {
+            registrationService.findRegistrationById(anyInt());
+        });
+
+        //then
+        then(registrationRepository).should().findById(anyInt());
     }
 
 

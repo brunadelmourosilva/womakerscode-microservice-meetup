@@ -41,7 +41,7 @@ public class RegistrationServiceImpl implements RegistrationService {
         validateRegistrationExistsByEmail(registration.getEmail());
         validateRegistrationNumberExistsByRegistration(registration.getNumber());
 
-        emailService.sendEmail(registration);
+        //emailService.sendEmail(registration);
         return registrationRepository.save(registration);
     }
 

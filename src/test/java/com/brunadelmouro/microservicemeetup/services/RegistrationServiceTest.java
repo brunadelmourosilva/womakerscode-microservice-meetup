@@ -11,29 +11,21 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
 
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 import static org.mockito.BDDMockito.*;
 
@@ -187,16 +179,12 @@ public class RegistrationServiceTest {
     @DisplayName("Should delete a Registration")
     public void deleteRegistrationTest(){
 
-        //cenário
-        Registration registration = createValidRegistration();
+        //given
+        given(registrationRepository.findById(1)).willReturn(Optional.of(registration));
 
-        //assert
+        //when
         assertDoesNotThrow(() -> registrationService.deleteRegistration(registration));
 
-        verify(registrationRepository, times(1)).delete(registration);
-    }
-
-    public Registration createValidRegistration(){
-        return new Registration(101, "Bruna", "bruna@inovags.com", "123", "001");
+        then(registrationRepository).should().delete(registration);
     }
 }

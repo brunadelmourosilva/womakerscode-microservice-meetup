@@ -50,10 +50,13 @@ public class RegistrationServiceTest {
     EmailServiceImpl emailService;
 
     Registration registration;
+    Page<Registration> registrationPage;
 
     @BeforeEach
     public void setUp(){
         registration = new Registration(1, "Bruna", "brunadelmouro@gmail.com", "123", "001");
+
+        registrationPage = new PageImpl<>(List.of(registration), PageRequest.of(1, 1), 1);
     }
 
     @Test
@@ -146,43 +149,17 @@ public class RegistrationServiceTest {
     @DisplayName("Should filter Registrations by Page")
     public void findRegistrationByPageTest() {
 
-        //cenário
-        Registration registration = createValidRegistration();
-        PageRequest pageRequest = PageRequest.of(0,10);
+        //given
+        given(registrationRepository.findAll(any(Example.class), any(PageRequest.class))).willReturn(registrationPage);
 
-        List<Registration> listRegistrations = Arrays.asList(registration);
-        Page<Registration> page = new PageImpl<>(Arrays.asList(registration),
-                PageRequest.of(0,10), 1);
+        //when
+        Page<Registration> responsePage = registrationService.findRegistrationPage(registration, registrationPage.getPageable());
 
-        //execução
-        Mockito.when(registrationRepository.findAll(Mockito.any(Example.class), Mockito.any(PageRequest.class)))
-                .thenReturn(page);
+        //then
+        then(registrationRepository).should().findAll(any(Example.class), any(PageRequest.class));
 
-        Page<Registration> result = registrationService.findRegistrationPage(registration, pageRequest);
-
-        //assert
-        assertThat(result.getTotalElements()).isEqualTo(1);
-        assertThat(result.getContent()).isEqualTo(listRegistrations);
-        assertThat(result.getPageable().getPageNumber()).isEqualTo(0);
-        assertThat(result.getPageable().getPageSize()).isEqualTo(10);
-    }
-
-
-    //cenário de erro
-    @Test
-    @DisplayName("Should return empty when get Registration by id doesn't exists")
-    public void registrationNotFoundByIdTest(){
-
-        //cenário
-        Integer id = 101;
-        Mockito.when(registrationRepository.findById(id)).thenReturn(Optional.empty());
-
-        //execução
-        Registration registration = registrationService.findRegistrationById(id);
-        Optional<Registration> foundRegistrationOp = Optional.ofNullable(registration);
-
-        //assert
-        assertThat(foundRegistrationOp.isPresent()).isFalse();
+        assertEquals(1, responsePage.getSize());
+        assertEquals("Bruna", responsePage.getContent().get(0).getName());
     }
 
     @Test

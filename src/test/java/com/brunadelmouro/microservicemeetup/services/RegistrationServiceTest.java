@@ -96,7 +96,7 @@ public class RegistrationServiceTest {
     }
 
     @Test
-    public void findRegistrationByIdWhenIdWasNotFound(){
+    public void findRegistrationByIdWhenIdWasNotFoundTest(){
         //given
         given(registrationRepository.findById(anyInt())).willThrow(new ObjectNotFoundException("Registration not found."));
 
@@ -112,19 +112,33 @@ public class RegistrationServiceTest {
 
     @Test
     @DisplayName("Should get a Registration by number")
-    public void findRegistrationByRegistrationNumber(){
+    public void findRegistrationByRegistrationNumberWithSuccessTest(){
+        //given
+        given(registrationRepository.findByNumber(registration.getNumber())).willReturn(registration);
 
-        String numberAttribute = "001";
+        //when
+        Registration response = registrationService.findRegistrationByRegistrationNumber(registration.getNumber());
 
-        Mockito.when(registrationRepository.findByNumber(numberAttribute))
-                .thenReturn(new Registration(1, numberAttribute));
+        //then
+        then(registrationRepository).should().findByNumber(registration.getNumber());
 
-        Registration registration = registrationService.findRegistrationByRegistrationNumber(numberAttribute);
-        Optional<Registration> foundRegistrationOp = Optional.ofNullable(registration);
+        assertEquals("Bruna", response.getName());
+        assertEquals("001", response.getNumber());
+    }
 
-        assertThat(foundRegistrationOp.isPresent()).isTrue();
-        assertThat(foundRegistrationOp.get().getId()).isEqualTo(1);
-        assertThat(foundRegistrationOp.get().getNumber()).isEqualTo(numberAttribute);
+    @Test
+    @DisplayName("Should get a Registration by number")
+    public void findRegistrationByRegistrationNumberWhenNumberWasNotFoundTest(){
+        //given
+        given(registrationRepository.findByNumber(anyString())).willThrow(IllegalArgumentException.class);
+
+        //when
+        assertThrows(IllegalArgumentException.class, () -> {
+            registrationService.findRegistrationByRegistrationNumber(anyString());
+        });
+
+        //then
+        then(registrationRepository).should().findByNumber(anyString());
     }
 
 

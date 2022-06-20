@@ -13,6 +13,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Example;
@@ -38,6 +40,7 @@ import static org.mockito.BDDMockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
+@MockitoSettings(strictness = Strictness.LENIENT)
 public class RegistrationServiceTest {
 
     @InjectMocks
@@ -164,27 +167,19 @@ public class RegistrationServiceTest {
 
     @Test
     @DisplayName("Should update a Registration")
-    public void updateRegistration() {
+    public void updateRegistrationWithSuccessTest() {
+        //given
+        given(registrationRepository.findById(registration.getId())).willReturn(Optional.of(registration)); //retornar o antigo registration
+        given(registrationRepository.save(registration)).willReturn(registration);
 
-        //cenário
-        Integer id = 101;
-        Registration updatingRegistration = createValidRegistration();
+        //when
+        Registration response = registrationService.updateRegistration(registration);
 
+        //then
+        then(registrationRepository).should().findById(registration.getId());
+        then(registrationRepository).should().save(registration);
 
-        //execução
-        Registration updatedRegistration = createValidRegistration();
-        updatedRegistration.setId(id);
-
-        Mockito.when(registrationRepository.save(updatingRegistration)).thenReturn(updatedRegistration);
-
-        Registration registration = registrationService.updateRegistration(updatingRegistration);
-
-        //assert
-        assertThat(registration.getId()).isEqualTo(updatedRegistration.getId());
-        assertThat(registration.getName()).isEqualTo(updatedRegistration.getName());
-        assertThat(registration.getEmail()).isEqualTo(updatedRegistration.getEmail());
-        assertThat(registration.getPassword()).isEqualTo(updatedRegistration.getPassword());
-        assertThat(registration.getNumber()).isEqualTo(updatedRegistration.getNumber());
+        assertEquals("123", response.getPassword());
 
     }
 

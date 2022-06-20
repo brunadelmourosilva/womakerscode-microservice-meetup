@@ -1,24 +1,20 @@
 package com.brunadelmouro.microservicemeetup.controllers;
 
+import com.brunadelmouro.microservicemeetup.config.SecurityConfig;
 import com.brunadelmouro.microservicemeetup.models.Registration;
-import com.brunadelmouro.microservicemeetup.models.dto.registration.RegistrationResponseDTO;
-import com.brunadelmouro.microservicemeetup.repositories.RegistrationRepository;
 import com.brunadelmouro.microservicemeetup.services.impl.RegistrationServiceImpl;
-import org.hamcrest.Matchers;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.BDDMockito;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
@@ -26,21 +22,15 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
-
-import java.util.Arrays;
-import java.util.Optional;
-
-import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@ExtendWith(SpringExtension.class)
+@WebMvcTest({RegistrationController.class})
 @ActiveProfiles("test")
-@WebMvcTest(controllers = {RegistrationController.class})
-@AutoConfigureMockMvc
 public class RegistrationControllerTest {
 
-    static String REGISTRATION_API = "/api/registrations";
+    static String REGISTRATION_API = "/api/registrations/";
 
     @Autowired
     MockMvc mockMvc;
@@ -49,43 +39,35 @@ public class RegistrationControllerTest {
     RegistrationServiceImpl registrationService;
 
     @Autowired
-    RegistrationRepository registrationRepository;
-
-    @Autowired
     ObjectMapper objectMapper;
+
+    Registration registration;
+
+    @AfterEach
+    void tearDown() {
+        reset(registrationService);
+    }
+
+    @BeforeEach
+    void setUp() {
+        registration = new Registration(1, "Vitória", "vitoria@gmail.com", "123", "001");
+    }
 
     @Test
     @DisplayName("Should get Registration information")
     public void saveRegistrationTest() throws Exception {
 
-        // cenario
-        Registration registration = createValidRegistration();
+        // given
+        given(registrationService.saveRegistration(any(Registration.class))).willReturn(registration);
 
-        Registration savedRegistration = createValidRegistration();
-
-
-        // execucao
-        BDDMockito.given(registrationService.saveRegistration(any(Registration.class))).willReturn(savedRegistration);
-
-
-        String json  = new ObjectMapper().writeValueAsString(registration);
-
-
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
-                .post(REGISTRATION_API)
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .content(json);
-
-        //assert
+        //when - then
         mockMvc
-                .perform(request)
+                .perform(MockMvcRequestBuilders.post(REGISTRATION_API)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(objectMapper.writeValueAsString(registration)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("id").value(101))
-                .andExpect(jsonPath("name").value(registration.getName()))
-                .andExpect(jsonPath("email").value(registration.getEmail()))
-                .andExpect(jsonPath("password").value(registration.getPassword()))
-                .andExpect(jsonPath("registrationNumber").value(registration.getNumber()));
+                .andExpect(jsonPath("id").value(1));
     }
 
     @Test
@@ -94,7 +76,7 @@ public class RegistrationControllerTest {
 
         Registration registration = createValidRegistration();
 
-        BDDMockito.given(registrationService
+        given(registrationService
                         .findRegistrationById(anyInt()))
                 .willReturn(registration);
 

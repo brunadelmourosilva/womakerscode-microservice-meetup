@@ -1,5 +1,6 @@
 package com.brunadelmouro.microservicemeetup.services;
 
+import com.brunadelmouro.microservicemeetup.exceptions.ObjectNotFoundException;
 import com.brunadelmouro.microservicemeetup.models.Meetup;
 import com.brunadelmouro.microservicemeetup.repositories.MeetupRepository;
 import com.brunadelmouro.microservicemeetup.services.impl.MeetupServiceImpl;
@@ -10,11 +11,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -25,6 +29,7 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles("test")
+@MockitoSettings(strictness = Strictness.LENIENT)
 class MeetupServiceTest {
 
     @InjectMocks
@@ -34,11 +39,15 @@ class MeetupServiceTest {
     private MeetupRepository meetupRepository;
 
     private Meetup meetup;
+    private Meetup meetup2;
+    List<Meetup> meetups;
 
     //setup padrão para os testes
     @BeforeEach
     void setUp(){
         meetup = new Meetup(1, "Teste", "20/07/2022");
+        meetup2 = new Meetup(2, "Teste 2", "20/07/2022");
+        meetups = List.of(meetup, meetup2);
     }
 
     @Test
@@ -72,71 +81,90 @@ class MeetupServiceTest {
 
     @Test
     @DisplayName("Should return a Meetup by id")
-    void findMeetupByIdTest(){
+    void findMeetupByIdWithSuccessTest(){
+        //given
+        given(meetupRepository.findById(anyInt())).willReturn(Optional.of(meetup));
 
-        //cenário
-        Meetup meetup = createValidMeetup();
+        //when
+        final var response = meetupService.findMeetupById(meetup.getId());
 
-        //execução
-        Mockito.when(meetupRepository.findById(1)).thenReturn(Optional.of(meetup));
+        //then
+        then(meetupRepository).should().findById(anyInt());
 
-        //assert
-        assertThat(meetupService.findMeetupById(1)).isEqualTo(meetup);
+        assertEquals("Teste", response.getEvent());
     }
 
     @Test
     @DisplayName("Should return a Meetup by id")
-    void findMeetupsTest(){
+    void findMeetupByIdWhenIdWasNotFoundTest(){
+        //given
+        given(meetupRepository.findById(anyInt())).willThrow(ObjectNotFoundException.class);
 
-        //cenário
-        Meetup meetup1 = createValidMeetup();
-        Meetup meetup2 = createValidMeetup();
+        //when
+        assertThrows(ObjectNotFoundException.class, () -> {
+            meetupService.findMeetupById(anyInt());
+        });
 
-        //execução
-        Mockito.when(meetupRepository.findAll()).thenReturn((Arrays.asList(meetup1, meetup2)));
+        //then
+        then(meetupRepository).should(times(1)).findById(anyInt());
+    }
 
-        //assert
-        assertThat(meetupService.findMeetups()).isEqualTo(Arrays.asList(meetup1, meetup2));
+    @Test
+    @DisplayName("Should return a Meetup by id")
+    void findMeetupsWithSuccessTest(){
+
+        //given
+        given(meetupRepository.findAll()).willReturn(meetups);
+
+        //when
+        final var response = meetupService.findMeetups();
+
+        //then
+        then(meetupRepository).should().findAll();
+
+        assertEquals(2, response.size());
     }
 
     @Test
     @DisplayName("Should update a Meetup")
-    void updateMeetup() {
+    void updateMeetupWithSuccessTest() {
+        //given
+        given(meetupRepository.findById(meetup2.getId())).willReturn(Optional.of(meetup2));
+        given(meetupRepository.save(meetup2)).willReturn(meetup2);
 
-        //cenário
-        Integer id = 101;
-        Meetup updatingMeetup = createValidMeetup();
+        //when
+        final var response = meetupService.updateMeetup(meetup2);
 
+        //then
+        then(meetupRepository).should().findById(meetup2.getId());
+        then(meetupRepository).should().save(meetup2);
 
-        //execução
-        Meetup updatedMeetup = createValidMeetup();
-        updatedMeetup.setId(id);
+        assertEquals("Teste 2", response.getEvent());
+    }
 
-        Mockito.when(meetupRepository.save(updatingMeetup)).thenReturn(updatedMeetup);
+    @Test
+    void updateMeetupWhenMeetupIdNotFoundTest(){
+        //given
+        doThrow(ObjectNotFoundException.class).when(meetupRepository).findById(anyInt());
 
-        Meetup meetup = meetupService.updateMeetup(updatingMeetup);
+        //when
+        assertThrows(ObjectNotFoundException.class, () -> {
+            meetupService.updateMeetup(meetup);
+        });
 
-        //assert
-        assertThat(meetup.getId()).isEqualTo(updatedMeetup.getId());
-        assertThat(meetup.getEvent()).isEqualTo(updatedMeetup.getEvent());
-        assertThat(meetup.getMeetupDate()).isEqualTo(updatedMeetup.getMeetupDate());
+        //then
+        then(meetupRepository).should(times(0)).save(meetup);
     }
 
     @Test
     @DisplayName("Should delete a Meetup")
     void deleteMeetupTest(){
-
-        //cenário
-        Meetup meetup = createValidMeetup();
-
-        //assert
+        //given
+        //doNothing().when(meetupRepository).delete(meetup);
+        //when
         assertDoesNotThrow(() -> meetupService.deleteMeetup(meetup));
 
-        verify(meetupRepository, times(1)).delete(meetup);
+        then(meetupRepository).should().delete(meetup);
     }
 
-
-    public Meetup createValidMeetup(){
-        return new Meetup(101, "Evento de testes unitários", LocalDate.now().toString());
-    }
 }

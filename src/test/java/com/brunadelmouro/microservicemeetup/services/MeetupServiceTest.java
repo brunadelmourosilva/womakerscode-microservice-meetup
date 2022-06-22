@@ -7,8 +7,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -17,44 +18,61 @@ import java.util.Arrays;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles("test")
-public class MeetupServiceTest {
+class MeetupServiceTest {
 
-    MeetupService meetupService;
+    @InjectMocks
+    private MeetupServiceImpl meetupService;
 
-    @MockBean
-    MeetupRepository meetupRepository;
+    @Mock
+    private MeetupRepository meetupRepository;
+
+    private Meetup meetup;
 
     //setup padrão para os testes
     @BeforeEach
-    public void setUp(){
-        this.meetupService = new MeetupServiceImpl(meetupRepository);
+    void setUp(){
+        meetup = new Meetup(1, "Teste", "20/07/2022");
     }
 
     @Test
     @DisplayName("Should save a Meetup")
-    public void saveMeetupTest(){
+    void saveMeetupWithSuccessTest(){
+        //given
+        given(meetupRepository.save(meetup)).willReturn(meetup);
 
-        //cenário
-        Meetup meetup = createValidMeetup();
+        //when
+        Meetup response = meetupService.saveMeetup(meetup);
 
-        //execução
-        Mockito.when(meetupRepository.existsByEvent(Mockito.anyString())).thenReturn(false);
+        //then
+        then(meetupRepository).should(times(1)).save(meetup);
 
-        //assert
-        assertThat(meetup.getId()).isEqualTo(1);
-        assertThat(meetup.getEvent()).isEqualTo("Evento de testes unitários");
-        assertThat(meetup.getMeetupDate()).isEqualTo(LocalDate.now().toString());
+        assertEquals("Teste", response.getEvent());
+    }
+
+    @Test
+    void saveMeetupWhenMeetupAlreadyExistsTest(){
+        //given
+        doThrow(IllegalArgumentException.class).when(meetupRepository).findAll();
+
+        //when
+        assertThrows(IllegalArgumentException.class, () -> {
+            meetupService.saveMeetup(meetup);
+        });
+
+        //then
+        then(meetupRepository).should(times(0)).save(meetup);
     }
 
     @Test
     @DisplayName("Should return a Meetup by id")
-    public void findMeetupByIdTest(){
+    void findMeetupByIdTest(){
 
         //cenário
         Meetup meetup = createValidMeetup();
@@ -68,7 +86,7 @@ public class MeetupServiceTest {
 
     @Test
     @DisplayName("Should return a Meetup by id")
-    public void findMeetupsTest(){
+    void findMeetupsTest(){
 
         //cenário
         Meetup meetup1 = createValidMeetup();
@@ -83,7 +101,7 @@ public class MeetupServiceTest {
 
     @Test
     @DisplayName("Should update a Meetup")
-    public void updateMeetup() {
+    void updateMeetup() {
 
         //cenário
         Integer id = 101;
@@ -106,7 +124,7 @@ public class MeetupServiceTest {
 
     @Test
     @DisplayName("Should delete a Meetup")
-    public void deleteMeetupTest(){
+    void deleteMeetupTest(){
 
         //cenário
         Meetup meetup = createValidMeetup();

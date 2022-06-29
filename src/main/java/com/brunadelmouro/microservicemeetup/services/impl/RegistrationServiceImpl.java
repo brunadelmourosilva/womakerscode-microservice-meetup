@@ -25,16 +25,14 @@ import java.util.stream.Collectors;
 public class RegistrationServiceImpl implements RegistrationService {
 
     RegistrationRepository registrationRepository;
-
-    public RegistrationServiceImpl(RegistrationRepository registrationRepository) {
-        this.registrationRepository = registrationRepository;
-    }
-
-    @Autowired
     private BCryptPasswordEncoder encoder;
-
-    @Autowired
     private EmailServiceImpl emailService;
+
+    public RegistrationServiceImpl(RegistrationRepository registrationRepository, BCryptPasswordEncoder encoder, EmailServiceImpl emailService) {
+        this.registrationRepository = registrationRepository;
+        this.encoder = encoder;
+        this.emailService = emailService;
+    }
 
     @Override
     public Registration saveRegistration(Registration registration) {

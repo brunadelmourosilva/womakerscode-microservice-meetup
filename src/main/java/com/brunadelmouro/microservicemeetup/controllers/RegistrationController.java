@@ -27,14 +27,17 @@ public class RegistrationController {
 
     Logger logger = LoggerFactory.getLogger(RegistrationController.class);
 
-    @Autowired
     private RegistrationServiceImpl registrationService;
+
+    public RegistrationController(RegistrationServiceImpl registrationService){
+        this.registrationService = registrationService;
+    }
 
     @ApiOperation(value = "Salvar Registration")
     @PostMapping
-    private ResponseEntity<RegistrationResponseDTO> saveRegistration(@Valid @RequestBody RegistrationRequestDTO registrationDto) {
+    private ResponseEntity<RegistrationResponseDTO> saveRegistration(@RequestBody RegistrationRequestDTO registrationDto) {
         Registration entityRegistration = registrationService.convertDtoToEntity(registrationDto);
-        registrationService.saveRegistration(entityRegistration);
+        entityRegistration = registrationService.saveRegistration(entityRegistration);
 
         logger.info("Registration saved");
 

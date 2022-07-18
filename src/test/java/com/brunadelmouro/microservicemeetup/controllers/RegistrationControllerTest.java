@@ -22,6 +22,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.testcontainers.shaded.com.fasterxml.jackson.core.JsonProcessingException;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.Optional;
@@ -104,6 +105,7 @@ public class RegistrationControllerTest {
                 .andExpect(jsonPath("$.name").value("Vitória"));
     }
 
+    //TODO this method isn't working
     @Test
     void getRegistrationByIdWhenIdWasNotFoundTest() throws Exception {
         given(registrationRepository.findById(anyInt())).willReturn(Optional.empty());
@@ -114,6 +116,28 @@ public class RegistrationControllerTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
+
+    @Test
+    void getRegistrationByRegistrationNumberTest() throws Exception {
+        given(registrationRepository.findByNumber(anyString())).willReturn(registration);
+
+        mockMvc
+                .perform(MockMvcRequestBuilders.get(REGISTRATION_API.concat("registrationNumber/001"))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(registrationResponseDTO))) //enter on service class
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.name").value("Vitória"));
+    }
+
+    //TODO make a test that returns a IllegalArgumentException when registration number was not found
+
+    //TODO make a test to testing a page endpoint
+
+
+
+
 
     //    @Test
 //    @DisplayName("Should delete the Registration")

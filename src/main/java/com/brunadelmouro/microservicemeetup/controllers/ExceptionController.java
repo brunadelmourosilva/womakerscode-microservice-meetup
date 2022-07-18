@@ -20,10 +20,10 @@ public class ExceptionController {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(ObjectNotFoundException.class)
     public ResponseEntity<StandardError> objectNotFound(ObjectNotFoundException e){
-        return ResponseEntity.ok(
+        return new ResponseEntity<>(
                 new StandardError(e.getMessage(),
                         DateUtils.convertSystemTimeMillisToString(System.currentTimeMillis()),
-                        HttpStatus.NOT_FOUND.value()));
+                        HttpStatus.NOT_FOUND.value()), HttpStatus.NOT_FOUND);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

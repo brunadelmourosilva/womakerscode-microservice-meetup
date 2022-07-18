@@ -1,39 +1,30 @@
 package com.brunadelmouro.microservicemeetup.controllers;
 
 import com.brunadelmouro.microservicemeetup.MicroservicemeetupApplication;
-import com.brunadelmouro.microservicemeetup.config.SecurityConfig;
+import com.brunadelmouro.microservicemeetup.exceptions.ObjectNotFoundException;
 import com.brunadelmouro.microservicemeetup.models.Registration;
 import com.brunadelmouro.microservicemeetup.models.dto.registration.RegistrationRequestDTO;
 import com.brunadelmouro.microservicemeetup.models.dto.registration.RegistrationResponseDTO;
 import com.brunadelmouro.microservicemeetup.repositories.RegistrationRepository;
-import com.brunadelmouro.microservicemeetup.security.JWTUtil;
 import com.brunadelmouro.microservicemeetup.services.impl.EmailServiceImpl;
 import com.brunadelmouro.microservicemeetup.services.impl.RegistrationServiceImpl;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.util.Optional;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
@@ -50,6 +41,7 @@ public class RegistrationControllerTest {
     @Autowired
     RegistrationController registrationController;
 
+    @Autowired
     RegistrationServiceImpl registrationService;
 
     ObjectMapper objectMapper;
@@ -85,7 +77,7 @@ public class RegistrationControllerTest {
     }
 
     @Test
-    @DisplayName("Should get Registration information")
+    @DisplayName("Should save a Registration information")
     public void saveRegistrationTest() throws Exception {
         given(registrationRepository.save(any())).willReturn(registration);
 
@@ -99,22 +91,47 @@ public class RegistrationControllerTest {
     }
 
     @Test
-    @DisplayName("Should delete the Registration")
-    public void deleteRegistration() throws Exception {
+    void getRegistrationByIdTest() throws Exception {
+        given(registrationRepository.findById(anyInt())).willReturn(Optional.of(registration));
 
-        Registration registration = createValidRegistration();
-
-        given(registrationService
-                        .findRegistrationById(anyInt()))
-                .willReturn(registration);
-
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
-                .delete(REGISTRATION_API.concat("/" + 1))
-                .accept(MediaType.APPLICATION_JSON);
-
-        mockMvc.perform(requestBuilder)
-                .andExpect(status().isNoContent());
+        mockMvc
+                .perform(MockMvcRequestBuilders.get(REGISTRATION_API.concat("1"))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(registrationResponseDTO)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.name").value("Vitória"));
     }
+
+    @Test
+    void getRegistrationByIdWhenIdWasNotFoundTest() throws Exception {
+        given(registrationRepository.findById(anyInt())).willReturn(Optional.empty());
+
+        mockMvc
+                .perform(MockMvcRequestBuilders.get(REGISTRATION_API.concat("454545"))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
+
+    //    @Test
+//    @DisplayName("Should delete the Registration")
+//    public void deleteRegistration() throws Exception {
+//
+//        Registration registration = createValidRegistration();
+//
+//        given(registrationService
+//                        .findRegistrationById(anyInt()))
+//                .willReturn(registration);
+//
+//        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+//                .delete(REGISTRATION_API.concat("/" + 1))
+//                .accept(MediaType.APPLICATION_JSON);
+//
+//        mockMvc.perform(requestBuilder)
+//                .andExpect(status().isNoContent());
+//    }
 
     public Registration createValidRegistration() {
         return new Registration(101, "Vitória", "vitoria@gmail.com", "123", "001");

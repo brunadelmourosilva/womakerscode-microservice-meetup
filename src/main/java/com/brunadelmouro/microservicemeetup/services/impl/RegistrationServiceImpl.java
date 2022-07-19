@@ -105,7 +105,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     public Registration validateRegistrationExists(Registration registration){
         if (registration == null || registration.getId() == null) {
-            throw new IllegalArgumentException("Registration id cannot be null.");
+                throw new IllegalArgumentException("Registration id cannot be null.");
         }
         return registration;
     }

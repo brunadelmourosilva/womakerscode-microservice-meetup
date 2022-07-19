@@ -1,13 +1,14 @@
 package com.brunadelmouro.microservicemeetup.controllers;
 
 import com.brunadelmouro.microservicemeetup.MicroservicemeetupApplication;
-import com.brunadelmouro.microservicemeetup.exceptions.ObjectNotFoundException;
 import com.brunadelmouro.microservicemeetup.models.Registration;
 import com.brunadelmouro.microservicemeetup.models.dto.registration.RegistrationRequestDTO;
 import com.brunadelmouro.microservicemeetup.models.dto.registration.RegistrationResponseDTO;
 import com.brunadelmouro.microservicemeetup.repositories.RegistrationRepository;
 import com.brunadelmouro.microservicemeetup.services.impl.EmailServiceImpl;
 import com.brunadelmouro.microservicemeetup.services.impl.RegistrationServiceImpl;
+import org.assertj.core.api.Assertions;
+import org.hibernate.ObjectNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,6 +23,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.util.NestedServletException;
 import org.testcontainers.shaded.com.fasterxml.jackson.core.JsonProcessingException;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -110,11 +112,12 @@ public class RegistrationControllerTest {
     void getRegistrationByIdWhenIdWasNotFoundTest() throws Exception {
         given(registrationRepository.findById(anyInt())).willReturn(Optional.empty());
 
-        mockMvc
-                .perform(MockMvcRequestBuilders.get(REGISTRATION_API.concat("454545"))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
+        Assertions.assertThatExceptionOfType(NestedServletException.class)
+            .isThrownBy(() ->
+                mockMvc
+                        .perform(MockMvcRequestBuilders.get(REGISTRATION_API.concat("454545")))
+                        .andExpect(status().isNotFound())
+                ).withMessageContaining("Registration not found.");
     }
 
     @Test
@@ -131,7 +134,16 @@ public class RegistrationControllerTest {
                 .andExpect(jsonPath("$.name").value("Vitória"));
     }
 
-    //TODO make a test that returns a IllegalArgumentException when registration number was not found
+    @Test
+    void givenNullRegistration_ThrowsException() {
+        given(registrationRepository.findByNumber(registration.getNumber())).willReturn(null);
+
+        Assertions.assertThatExceptionOfType(NestedServletException.class)
+                .isThrownBy(() ->
+                        mockMvc.perform(MockMvcRequestBuilders.get(REGISTRATION_API.concat("registrationNumber/001")))
+                                .andExpect(status().isNotFound())
+                ).withMessageContaining("Registration id cannot be null.");
+    }
 
     //TODO make a test to testing a page endpoint
 

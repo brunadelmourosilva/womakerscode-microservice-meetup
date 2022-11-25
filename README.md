@@ -9,6 +9,8 @@ API desenvolvida no bootcamp back-end Java da WoMakersCode, cujo objetivo é reg
 ### Status
 >Concluído ✔️
 
+>Vídeo: https://www.youtube.com/watch?v=MOgbZ4KyACU
+
 ---
 
 ### Tecnologias 🖥️
